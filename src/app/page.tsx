@@ -1,9 +1,12 @@
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
+import HorseCard from '@/components/HorseCard';
+import { getHorses } from '@/lib/data';
 import styles from './page.module.css';
 
-export default function Home() {
+export default async function Home() {
+  const horses = await getHorses();
   return (
     <main className={styles.main}>
       <Navbar />
@@ -24,7 +27,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Placeholder for "Våra Hästar" Preview - Will be dynamic later */}
+      {/* Featured Horses Preview */}
       <section className={styles.previewSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
@@ -35,10 +38,9 @@ export default function Home() {
           </div>
 
           <div className={styles.gridPlaceholder}>
-            {/* We will replace this with a dynamic Grid component later */}
-            <div className={styles.placeholderCard}>Coming Soon: Häst 1</div>
-            <div className={styles.placeholderCard}>Coming Soon: Häst 2</div>
-            <div className={styles.placeholderCard}>Coming Soon: Häst 3</div>
+            {horses.slice(0, 3).map((horse) => (
+              <HorseCard key={horse.id} horse={horse} />
+            ))}
           </div>
         </div>
       </section>
