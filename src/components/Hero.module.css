@@ -5,11 +5,18 @@
     background-image: url('/assets/hero.jpg');
     background-size: cover;
     background-position: center;
-    background-attachment: fixed;
-    /* Simple parallax effect */
+    background-attachment: scroll;
+    /* Default to scroll for mobile */
     display: flex;
     align-items: center;
     overflow: hidden;
+}
+
+@media (min-width: 1024px) {
+    .hero {
+        background-attachment: fixed;
+        /* Parallax only on large screens */
+    }
 }
 
 .overlay {
