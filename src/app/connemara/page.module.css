@@ -1,0 +1,83 @@
+.main {
+    min-height: 100vh;
+    background-color: var(--color-background);
+}
+
+.header {
+    background-color: var(--color-primary);
+    padding: 10rem 0 6rem;
+    color: white;
+    text-align: center;
+}
+
+.headerSubtitle {
+    font-size: 1.25rem;
+    opacity: 0.9;
+    margin-top: 1.5rem;
+    max-width: 700px;
+    margin-left: auto;
+    margin-right: auto;
+    line-height: 1.6;
+}
+
+.contentWrapper {
+    padding: 6rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8rem;
+}
+
+.section,
+.sectionReverse {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    align-items: center;
+}
+
+@media (min-width: 768px) {
+    .section {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .sectionReverse {
+        grid-template-columns: 1fr 1fr;
+        direction: rtl;
+        /* Visual trick to swap columns, reset text dir in children */
+    }
+
+    .sectionReverse>* {
+        direction: ltr;
+    }
+}
+
+.textCol {
+    padding: 1rem;
+}
+
+.sectionTitle {
+    font-size: 2rem;
+    color: var(--color-primary);
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.imageCol {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+}
+
+.placeholderImage {
+    width: 100%;
+    height: 100%;
+    background-color: #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    font-weight: 500;
+    font-size: 1.2rem;
+}
