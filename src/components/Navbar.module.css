@@ -1,0 +1,134 @@
+.nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    transition: all 0.4s ease;
+    padding: 1.5rem 0;
+}
+
+.scrolled {
+    background: rgba(26, 60, 52, 0.95);
+    /* Deep Green */
+    backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+    /* Accent border */
+}
+
+.transparent {
+    background: transparent;
+}
+
+.inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logoLink {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+}
+
+.logoText {
+    font-size: 1.75rem;
+    font-weight: 800;
+    color: var(--color-white);
+    letter-spacing: 0.1em;
+}
+
+.desktopMenu {
+    display: none;
+    gap: 2.5rem;
+}
+
+@media (min-width: 768px) {
+    .desktopMenu {
+        display: flex;
+    }
+}
+
+.link {
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    position: relative;
+}
+
+.link:hover {
+    color: var(--color-accent);
+}
+
+.link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 1px;
+    bottom: -4px;
+    left: 0;
+    background-color: var(--color-accent);
+    transition: width 0.3s ease;
+}
+
+.link:hover::after {
+    width: 100%;
+}
+
+.mobileToggle {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    cursor: pointer;
+    display: block;
+}
+
+@media (min-width: 768px) {
+    .mobileToggle {
+        display: none;
+    }
+}
+
+/* Mobile Menu */
+.mobileMenu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--color-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-100%);
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: -1;
+    /* Behind nav bar content */
+}
+
+.open {
+    transform: translateY(0);
+}
+
+.mobileLinks {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    text-align: center;
+}
+
+.mobileLinks a {
+    font-size: 2rem;
+    font-weight: 700;
+    color: var(--color-white);
+}
+
+.mobileLinks a:hover {
+    color: var(--color-accent);
+}
