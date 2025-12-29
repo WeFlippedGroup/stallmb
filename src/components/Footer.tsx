@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import { Facebook, Instagram, Mail, MapPin } from 'lucide-react';
 import styles from './Footer.module.css';
 
@@ -8,7 +9,16 @@ export default function Footer() {
             <div className="container">
                 <div className={styles.grid}>
                     <div className={styles.brandCol}>
-                        <span className={styles.logoText}>STALL<span className="text-accent">MB</span></span>
+                        <div className={styles.brandHeader}>
+                            <Image
+                                src="/assets/logo-round.png"
+                                alt="StallMB Logo"
+                                width={50}
+                                height={50}
+                                className={styles.logoImage}
+                            />
+                            <span className={styles.logoText}>STALL<span className="text-accent">MB</span></span>
+                        </div>
                         <p className={styles.description}>
                             Uppfödning av Connemarahästar med fokus på prestation och temperament.
                         </p>

@@ -19,11 +19,21 @@
     }
 }
 
+.brandHeader {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.logoImage {
+    border-radius: 50%;
+}
+
 .logoText {
     font-size: 1.5rem;
     font-weight: 800;
     display: block;
-    margin-bottom: 1rem;
 }
 
 .description {

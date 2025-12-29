@@ -37,6 +37,13 @@ export default function Navbar() {
                     <Link href="/" className={styles.logoLink}>
                         <div className={styles.logoContainer}>
                             {/* Using text for now if image doesn't load perfectly, but structure for image is here */}
+                            <Image
+                                src="/assets/logo-round.png"
+                                alt="StallMB Logo"
+                                width={40}
+                                height={40}
+                                className={styles.logoImage}
+                            />
                             <span className={styles.logoText}>STALL<span className="text-accent">MB</span></span>
                         </div>
                     </Link>
