@@ -175,6 +175,8 @@ export default function NewHorsePage() {
                                 <option value="sale">Till Salu</option>
                                 <option value="youngster">Unghäst</option>
                                 <option value="retired">Pensionär</option>
+                                <option value="sold">Såld</option>
+                                <option value="reference">Tidigare häst / Referens</option>
                             </select>
                         </div>
                     </div>

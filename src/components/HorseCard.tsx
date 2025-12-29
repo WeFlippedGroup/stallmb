@@ -13,7 +13,7 @@ export interface Horse {
     age: string;
     description: string;
     image_url: string;
-    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | '';
+    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | '';
     pedigree?: any;
 }
 
@@ -62,7 +62,9 @@ function getCategoryLabel(cat: string) {
         sale: 'Till Salu',
         youngster: 'Unghäst',
         retired: 'Pensionär',
-        stallion: 'Hingst för avel'
+        stallion: 'Hingst för avel',
+        sold: 'Såld',
+        reference: 'Tidigare häst'
     };
     return map[cat] || cat;
 }
