@@ -55,6 +55,9 @@ export default function Footer() {
 
                 <div className={styles.copyright}>
                     <p>&copy; {new Date().getFullYear()} StallMB. All rights reserved.</p>
+                    <p className={styles.attribution}>
+                        Skapad av <a href="https://hastannons.se" target="_blank" rel="noopener noreferrer" className={styles.attributionLink}>hastannons.se</a> av kärlek till hästen
+                    </p>
                 </div>
             </div>
         </footer>
