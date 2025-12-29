@@ -18,8 +18,7 @@ export default async function HorsesPage() {
                 <div className="container">
                     <h1 className="h1 text-white">Våra Hästar</h1>
                     <p className="p text-white" style={{ opacity: 0.9, marginTop: '1rem', maxWidth: '600px' }}>
-                        Här hittar du våra fantastiska Connemarahästar. Från lovande unghästar
-                        till våra finaste avelston.
+                        Här presenterar vi våra avelston, hingstar och föl.
                     </p>
                 </div>
             </div>
