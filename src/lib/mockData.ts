@@ -8,7 +8,15 @@ export const MOCK_HORSES: Horse[] = [
         age: '8 år',
         description: 'Ett fantastiskt sto med otrolig hoppteknik. Vunnit allt som går att vinna.',
         image_url: 'https://images.unsplash.com/photo-1553284965-83fd3e82fa5a?auto=format&fit=crop&q=80&w=800', // Placeholder
-        category: 'breeding'
+        category: 'stallion',
+        pedigree: {
+            sire: { name: 'Blue Moon' },
+            dam: { name: 'Misty Morning' },
+            sire_sire: { name: 'Night Sky' },
+            sire_dam: { name: 'Blue Star' },
+            dam_sire: { name: 'Morning Sun' },
+            dam_dam: { name: 'Foggy Day' }
+        }
     },
     {
         id: '2',

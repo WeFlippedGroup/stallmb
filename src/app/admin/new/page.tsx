@@ -57,7 +57,27 @@ export default function NewHorsePage() {
                 imageUrl = publicUrl;
             }
 
-            // 2. Insert Record
+            // 2. Collect Pedigree Data
+            // We use the simpler method of harvesting form data since we switched the inputs to uncontrolled
+            const formData = new FormData(e.target as HTMLFormElement);
+            const pedigree: Record<string, any> = {};
+
+            // List of pedigree keys to harvest
+            const pedKeys = [
+                'sire', 'sire_sire', 'sire_sire_sire', 'sire_sire_dam',
+                'sire_dam', 'sire_dam_sire', 'sire_dam_dam',
+                'dam', 'dam_sire', 'dam_sire_sire', 'dam_sire_dam',
+                'dam_dam', 'dam_dam_sire', 'dam_dam_dam'
+            ];
+
+            pedKeys.forEach(key => {
+                const value = formData.get(key);
+                if (value && typeof value === 'string' && value.trim() !== '') {
+                    pedigree[key] = { name: value.trim() };
+                }
+            });
+
+            // 3. Insert Record
             const { error: insertError } = await supabase
                 .from('horses')
                 .insert({
@@ -65,8 +85,9 @@ export default function NewHorsePage() {
                     breed,
                     age,
                     description,
-                    category,
+                    category, // Can now be "stallion" or empty
                     image_url: imageUrl,
+                    pedigree: pedigree // Insert the JSON object
                 });
 
             if (insertError) throw insertError;
@@ -148,7 +169,9 @@ export default function NewHorsePage() {
                                 value={category} onChange={e => setCategory(e.target.value)}
                                 className={styles.select}
                             >
+                                <option value="">Ingen etikett</option>
                                 <option value="breeding">Avelssto</option>
+                                <option value="stallion">Hingst för avel</option>
                                 <option value="sale">Till Salu</option>
                                 <option value="youngster">Unghäst</option>
                                 <option value="retired">Pensionär</option>
@@ -164,6 +187,61 @@ export default function NewHorsePage() {
                             placeholder="Berätta om hästen..."
                             className={styles.textarea}
                         />
+                    </div>
+
+                    <div className={styles.sectionHeader}>
+                        <h2>Härstamning (3 led)</h2>
+                        <p className={styles.helpText}>Fyll i så mycket du vet. Lämnas tomt visas inget.</p>
+                    </div>
+
+                    <div className={styles.pedigreeGrid}>
+                        {/* Sire Line */}
+                        <div className={styles.pedigreeColumn}>
+                            <h3>Far (Sire)</h3>
+                            <input placeholder="Far" name="sire" className={styles.input} />
+                            <div className={styles.subGrid}>
+                                <div>
+                                    <label>Farfar</label>
+                                    <input placeholder="Farfar" name="sire_sire" className={styles.input} />
+                                    <div className={styles.microGrid}>
+                                        <input placeholder="Farfars Far" name="sire_sire_sire" className={styles.microInput} />
+                                        <input placeholder="Farfars Mor" name="sire_sire_dam" className={styles.microInput} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>Farmor</label>
+                                    <input placeholder="Farmor" name="sire_dam" className={styles.input} />
+                                    <div className={styles.microGrid}>
+                                        <input placeholder="Farmors Far" name="sire_dam_sire" className={styles.microInput} />
+                                        <input placeholder="Farmors Mor" name="sire_dam_dam" className={styles.microInput} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Dam Line */}
+                        <div className={styles.pedigreeColumn}>
+                            <h3>Mor (Dam)</h3>
+                            <input placeholder="Mor" name="dam" className={styles.input} />
+                            <div className={styles.subGrid}>
+                                <div>
+                                    <label>Morfar</label>
+                                    <input placeholder="Morfar" name="dam_sire" className={styles.input} />
+                                    <div className={styles.microGrid}>
+                                        <input placeholder="Morfars Far" name="dam_sire_sire" className={styles.microInput} />
+                                        <input placeholder="Morfars Mor" name="dam_sire_dam" className={styles.microInput} />
+                                    </div>
+                                </div>
+                                <div>
+                                    <label>Mormor</label>
+                                    <input placeholder="Mormor" name="dam_dam" className={styles.input} />
+                                    <div className={styles.microGrid}>
+                                        <input placeholder="Mormors Far" name="dam_dam_sire" className={styles.microInput} />
+                                        <input placeholder="Mormors Mor" name="dam_dam_dam" className={styles.microInput} />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div className={styles.actions}>

@@ -112,7 +112,77 @@ export default async function HorseDetailPage({ params }: { params: { id: string
                             <FileText size={24} />
                             <h2>Stamtavla</h2>
                         </div>
-                        <div className={styles.comingSoonBox}>Stamtavla kommer snart...</div>
+
+                        {/* Pedigree Tree Visualization */}
+                        {horse.pedigree && Object.keys(horse.pedigree).length > 0 ? (
+                            <div className={styles.pedigreeTree}>
+                                {/* Generation 1: Parents */}
+                                <div className={styles.pedigreeGen1}>
+                                    <div className={styles.pedigreeNode}>
+                                        <span className={styles.nodeLabel}>Far</span>
+                                        <span className={styles.nodeValue}>{horse.pedigree.sire?.name || '-'}</span>
+                                    </div>
+                                    <div className={styles.pedigreeNode}>
+                                        <span className={styles.nodeLabel}>Mor</span>
+                                        <span className={styles.nodeValue}>{horse.pedigree.dam?.name || '-'}</span>
+                                    </div>
+                                </div>
+
+                                {/* Generation 2: Grandparents */}
+                                <div className={styles.pedigreeGen2}>
+                                    {/* Sire Side */}
+                                    <div className={styles.pedigreeGroup}>
+                                        <div className={styles.pedigreeNode}>
+                                            <span className={styles.nodeLabel}>Farfar</span>
+                                            <span className={styles.nodeValue}>{horse.pedigree.sire_sire?.name || '-'}</span>
+                                        </div>
+                                        <div className={styles.pedigreeNode}>
+                                            <span className={styles.nodeLabel}>Farmor</span>
+                                            <span className={styles.nodeValue}>{horse.pedigree.sire_dam?.name || '-'}</span>
+                                        </div>
+                                    </div>
+                                    {/* Dam Side */}
+                                    <div className={styles.pedigreeGroup}>
+                                        <div className={styles.pedigreeNode}>
+                                            <span className={styles.nodeLabel}>Morfar</span>
+                                            <span className={styles.nodeValue}>{horse.pedigree.dam_sire?.name || '-'}</span>
+                                        </div>
+                                        <div className={styles.pedigreeNode}>
+                                            <span className={styles.nodeLabel}>Mormor</span>
+                                            <span className={styles.nodeValue}>{horse.pedigree.dam_dam?.name || '-'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* Generation 3: Great Grandparents */}
+                                <div className={styles.pedigreeGen3}>
+                                    {/* Sire Side */}
+                                    <div className={styles.pedigreeGroup}>
+                                        <div className={styles.pedigreePair}>
+                                            <span>{horse.pedigree.sire_sire_sire?.name || '-'}</span>
+                                            <span>{horse.pedigree.sire_sire_dam?.name || '-'}</span>
+                                        </div>
+                                        <div className={styles.pedigreePair}>
+                                            <span>{horse.pedigree.sire_dam_sire?.name || '-'}</span>
+                                            <span>{horse.pedigree.sire_dam_dam?.name || '-'}</span>
+                                        </div>
+                                    </div>
+                                    {/* Dam Side */}
+                                    <div className={styles.pedigreeGroup}>
+                                        <div className={styles.pedigreePair}>
+                                            <span>{horse.pedigree.dam_sire_sire?.name || '-'}</span>
+                                            <span>{horse.pedigree.dam_sire_dam?.name || '-'}</span>
+                                        </div>
+                                        <div className={styles.pedigreePair}>
+                                            <span>{horse.pedigree.dam_dam_sire?.name || '-'}</span>
+                                            <span>{horse.pedigree.dam_dam_dam?.name || '-'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className={styles.comingSoonBox}>Ingen stamtavla inlagd än.</div>
+                        )}
                     </div>
 
                     <div className={styles.section}>
@@ -136,7 +206,8 @@ function getCategoryLabel(cat: string) {
         breeding: 'Avelssto',
         sale: 'Till Salu',
         youngster: 'Unghäst',
-        retired: 'Pensionär'
+        retired: 'Pensionär',
+        stallion: 'Hingst för avel'
     };
     return map[cat] || cat;
 }

@@ -13,7 +13,8 @@ export interface Horse {
     age: string;
     description: string;
     image_url: string;
-    category: 'breeding' | 'sale' | 'youngster' | 'retired';
+    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | '';
+    pedigree?: any;
 }
 
 interface HorseCardProps {
@@ -39,9 +40,11 @@ export default function HorseCard({ horse }: HorseCardProps) {
                     />
                     <div className={styles.shimmerEffect} />
 
-                    <div className={styles.overlay}>
-                        <span className={styles.categoryBadge}>{getCategoryLabel(horse.category)}</span>
-                    </div>
+                    {horse.category && (
+                        <div className={styles.overlay}>
+                            <span className={styles.categoryBadge}>{getCategoryLabel(horse.category)}</span>
+                        </div>
+                    )}
                 </div>
 
                 <div className={styles.info}>
@@ -58,7 +61,8 @@ function getCategoryLabel(cat: string) {
         breeding: 'Avelssto',
         sale: 'Till Salu',
         youngster: 'Unghäst',
-        retired: 'Pensionär'
+        retired: 'Pensionär',
+        stallion: 'Hingst för avel'
     };
     return map[cat] || cat;
 }
