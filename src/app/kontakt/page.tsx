@@ -45,7 +45,7 @@ export default async function ContactPage() {
                         </div>
                         <h3 className="h3">Besök Oss</h3>
                         <p className={styles.cardText}>Vi finns på den vackra landsbygden utanför Töreboda.</p>
-                        <span className={styles.address}>Rud Brånäng 9<br />54 590 Töreboda</span>
+                        <span className={styles.address}>Stall MB<br />Rud Brånäng 9,<br />54 590 Töreboda</span>
                     </div>
 
                     <div className={styles.infoCard}>

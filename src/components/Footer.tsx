@@ -39,7 +39,7 @@ export default function Footer() {
                         </a>
                         <div className={styles.contactItem}>
                             <MapPin size={18} className="text-accent" />
-                            <span>Rud Brånäng 9, 54 590 Töreboda</span>
+                            <span>Stall MB<br />Rud Brånäng 9,<br />54 590 Töreboda</span>
                         </div>
 
                         <div className={styles.socials}>
