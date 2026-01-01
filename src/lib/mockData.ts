@@ -123,6 +123,26 @@ export const MOCK_HORSES: Horse[] = [
         }
     },
     {
+        id: 'show-la-pan',
+        name: 'Show-La-Pan',
+        breed: 'Connemara',
+        age: '2014',
+        description: 'S1-372004100016430. Imp Irland. Vår fina avelshingst.',
+        image_url: '/assets/horses/show-la-pan/1.jpg',
+        images: [
+            '/assets/horses/show-la-pan/1.jpg',
+            '/assets/horses/show-la-pan/2.jpg',
+            '/assets/horses/show-la-pan/3.jpg',
+            '/assets/horses/show-la-pan/4.jpg'
+        ],
+        category: 'stallion',
+        pedigree: {
+            sire: { name: 'Westside Mirah', id: '' },
+            dam: { name: '', id: '' },
+            damsire: { name: 'Shadow’s Dun', id: '' }
+        }
+    },
+    {
         id: 'midnight-lady',
         name: 'Midnight Lady',
         breed: 'Connemara',
