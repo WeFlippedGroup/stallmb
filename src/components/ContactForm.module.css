@@ -1,10 +1,10 @@
-
 .formCard {
-    background-color: var(--color-surface);
-    border-radius: var(--border-radius-lg);
+    background-color: var(--color-white);
+    border-radius: 12px;
     padding: 2rem;
     height: 100%;
-    border: 1px solid var(--color-border);
+    border: 1px solid #e5e5e5;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
 }
 
 .form {
@@ -25,21 +25,24 @@
     color: var(--color-text);
 }
 
-.input, .textarea {
+.input,
+.textarea {
     padding: 0.75rem 1rem;
-    border-radius: var(--border-radius-md);
-    border: 1px solid var(--color-border);
-    background-color: var(--color-bg);
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    background-color: var(--color-white);
     color: var(--color-text);
     font-family: inherit;
     font-size: 1rem;
-    transition: var(--transition-base);
+    transition: all 0.2s ease;
 }
 
-.input:focus, .textarea:focus {
+.input:focus,
+.textarea:focus {
     outline: none;
     border-color: var(--color-primary);
-    box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb), 0.1);
+    box-shadow: 0 0 0 2px rgba(26, 60, 52, 0.2);
+    /* hex to rgba manually for #1A3C34 */
 }
 
 .submitButton {
@@ -51,16 +54,17 @@
     background-color: var(--color-primary);
     color: white;
     border: none;
-    border-radius: var(--border-radius-md);
+    border-radius: 6px;
     font-weight: 600;
     font-size: 1rem;
     cursor: pointer;
-    transition: var(--transition-base);
+    transition: background-color 0.2s ease;
     margin-top: 0.5rem;
 }
 
 .submitButton:hover:not(:disabled) {
-    background-color: var(--color-primary-dark);
+    background-color: #122b25;
+    /* Darker shade of primary */
 }
 
 .submitButton:disabled {
@@ -97,6 +101,7 @@
     from {
         transform: rotate(0deg);
     }
+
     to {
         transform: rotate(360deg);
     }
