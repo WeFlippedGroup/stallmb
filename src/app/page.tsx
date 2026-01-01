@@ -38,7 +38,7 @@ export default async function Home() {
           </div>
 
           <div className={styles.gridPlaceholder}>
-            {horses.slice(0, 3).map((horse) => (
+            {horses.slice(0, 6).map((horse) => (
               <HorseCard key={horse.id} horse={horse} />
             ))}
           </div>

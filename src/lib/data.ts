@@ -18,6 +18,27 @@ export async function getHorses(): Promise<Horse[]> {
     }
 }
 
+export async function getHorse(id: string): Promise<Horse | undefined> {
+    try {
+        // First try to fetch from Supabase
+        const { data, error } = await supabase
+            .from('horses')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+        if (!error && data) {
+            return data as Horse;
+        }
+
+        // If not found in DB (or error), fallback to mock data
+        return MOCK_HORSES.find((h) => h.id === id);
+    } catch (e) {
+        // Fallback to mock data on exception
+        return MOCK_HORSES.find((h) => h.id === id);
+    }
+}
+
 export type GuestbookEntry = {
     id: number;
     name: string;

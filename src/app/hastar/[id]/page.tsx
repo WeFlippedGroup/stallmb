@@ -1,4 +1,4 @@
-import { getHorses } from '@/lib/data';
+import { getHorses, getHorse } from '@/lib/data';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
@@ -14,9 +14,17 @@ export async function generateStaticParams() {
     }));
 }
 
+export async function generateMetadata({ params }: { params: { id: string } }) {
+    const horse = await getHorse(params.id);
+    if (!horse) return { title: 'Häst hittades inte' };
+    return {
+        title: `${horse.name} | Stall MB`,
+        description: horse.description,
+    };
+}
+
 export default async function HorseDetailPage({ params }: { params: { id: string } }) {
-    const horses = await getHorses();
-    const horse = horses.find((h) => h.id === params.id);
+    const horse = await getHorse(params.id);
 
     if (!horse) {
         return (
