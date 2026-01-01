@@ -69,6 +69,9 @@ export default function AdminDashboard() {
                                 </div>
                             </div>
                             <div className={styles.actions}>
+                                <Link href={`/admin/edit/${horse.id}`} className={styles.editBtn} title="Redigera">
+                                    <Edit2 size={18} />
+                                </Link>
                                 <button onClick={() => handleDelete(horse.id)} className={styles.deleteBtn} title="Ta bort">
                                     <Trash2 size={18} />
                                 </button>

@@ -1,16 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
-import { ChevronLeft, Upload, X } from 'lucide-react';
+import { useRouter, useParams } from 'next/navigation';
+import { ChevronLeft, Upload, X, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import styles from './page.module.css';
+import styles from '../../new/page.module.css'; // Reusing styles
 
-export default function NewHorsePage() {
+export default function EditHorsePage() {
     const router = useRouter();
-    const [loading, setLoading] = useState(false);
+    const params = useParams();
+    const id = params?.id as string;
+
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
     const [error, setError] = useState<string | null>(null);
 
     // Form State
@@ -21,20 +25,63 @@ export default function NewHorsePage() {
     const [category, setCategory] = useState('breeding');
 
     // Image State
+    // We store the full array of image URLs here
     const [images, setImages] = useState<string[]>([]);
 
-    // Image Upload Handler
+    // Pedigree state (for controlled inputs if needed, or just to populate defaultValue)
+    const [pedigree, setPedigree] = useState<any>({});
+
+    useEffect(() => {
+        const fetchHorse = async () => {
+            if (!id) return;
+
+            const { data, error } = await supabase
+                .from('horses')
+                .select('*')
+                .eq('id', id)
+                .single();
+
+            if (error) {
+                setError('Kunde inte hitta hästen.');
+                setLoading(false);
+                return;
+            }
+
+            if (data) {
+                setName(data.name || '');
+                setBreed(data.breed || 'Connemara');
+                setAge(data.age || '');
+                setDescription(data.description || '');
+                setCategory(data.category || 'breeding');
+                setPedigree(data.pedigree || {});
+
+                // Combine legacy image_url with new images array if present
+                // Priority: images array -> single image_url -> empty
+                let loadedImages: string[] = [];
+                if (data.images && Array.isArray(data.images)) {
+                    loadedImages = data.images;
+                } else if (data.image_url) {
+                    loadedImages = [data.image_url];
+                }
+                setImages(loadedImages);
+            }
+            setLoading(false);
+        };
+
+        fetchHorse();
+    }, [id]);
+
     const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
         if (!e.target.files || e.target.files.length === 0) return;
 
-        // Limit check
+        // Check if adding these would exceed limit of 20
         const newFilesCount = e.target.files.length;
         if (images.length + newFilesCount > 20) {
             alert('Du kan max ha 20 bilder per häst.');
             return;
         }
 
-        setLoading(true); // Re-using loading state for specific upload indication might be better, but this blocks submit
+        setSaving(true);
         const newImageUrls: string[] = [];
 
         try {
@@ -61,8 +108,9 @@ export default function NewHorsePage() {
         } catch (err: any) {
             alert('Fel vid uppladdning: ' + err.message);
         } finally {
-            setLoading(false);
-            e.target.value = ''; // Reset input
+            setSaving(false);
+            // Reset input
+            e.target.value = '';
         }
     };
 
@@ -71,6 +119,7 @@ export default function NewHorsePage() {
     };
 
     const setMainImage = (index: number) => {
+        // Move the selected image to index 0
         const newImages = [...images];
         const selected = newImages.splice(index, 1)[0];
         newImages.unshift(selected);
@@ -79,13 +128,13 @@ export default function NewHorsePage() {
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        setLoading(true);
+        setSaving(true);
         setError(null);
 
         try {
             // Harvest Pedigree Data
             const formData = new FormData(e.target as HTMLFormElement);
-            const pedigree: Record<string, any> = {};
+            const newPedigree: Record<string, any> = {};
             const pedKeys = [
                 'sire', 'sire_sire', 'sire_sire_sire', 'sire_sire_dam',
                 'sire_dam', 'sire_dam_sire', 'sire_dam_dam',
@@ -95,34 +144,42 @@ export default function NewHorsePage() {
 
             pedKeys.forEach(key => {
                 const value = formData.get(key);
+                // Use existing value if not changed (form data might be empty if inputs didn't have defaultValue set precisely)
+                // Actually, for uncontrolled inputs with defaultValues, FormData works great.
                 if (value && typeof value === 'string' && value.trim() !== '') {
-                    pedigree[key] = { name: value.trim() };
+                    newPedigree[key] = { name: value.trim() };
                 }
             });
 
-            // Insert Record
-            const { error: insertError } = await supabase
+            // Update Record
+            const { error: updateError } = await supabase
                 .from('horses')
-                .insert({
+                .update({
                     name,
                     breed,
                     age,
                     description,
                     category,
-                    image_url: images[0] || null, // First image is main
-                    images: images, // All images
-                    pedigree: pedigree
-                });
+                    image_url: images[0] || null, // Main image is always first
+                    images: images, // Save all images
+                    pedigree: newPedigree
+                })
+                .eq('id', id);
 
-            if (insertError) throw insertError;
+            if (updateError) throw updateError;
 
             router.push('/admin');
 
         } catch (err: any) {
             setError(err.message || 'Något gick fel');
-            setLoading(false);
+            setSaving(false);
         }
     };
+
+    if (loading) return <div className={styles.loading}>Laddar...</div>;
+
+    // Helper to get nested pedigree name safely
+    const getPedigreeName = (key: string) => pedigree[key]?.name || '';
 
     return (
         <div className={styles.container}>
@@ -132,7 +189,7 @@ export default function NewHorsePage() {
             </Link>
 
             <div className={styles.card}>
-                <h1 className={styles.title}>Lägg till ny häst</h1>
+                <h1 className={styles.title}>Redigera häst</h1>
 
                 {error && <div className={styles.error}>{error}</div>}
 
@@ -180,8 +237,7 @@ export default function NewHorsePage() {
                             <label>Namn</label>
                             <input
                                 value={name} onChange={e => setName(e.target.value)}
-                                required placeholder="T.ex. Misty Blue"
-                                className={styles.input}
+                                required className={styles.input}
                             />
                         </div>
 
@@ -189,8 +245,7 @@ export default function NewHorsePage() {
                             <label>Ras</label>
                             <input
                                 value={breed} onChange={e => setBreed(e.target.value)}
-                                required placeholder="T.ex. Connemara"
-                                className={styles.input}
+                                required className={styles.input}
                             />
                         </div>
 
@@ -198,7 +253,6 @@ export default function NewHorsePage() {
                             <label>Ålder / Födelseår</label>
                             <input
                                 value={age} onChange={e => setAge(e.target.value)}
-                                placeholder="T.ex. 2018 eller 6 år"
                                 className={styles.input}
                             />
                         </div>
@@ -226,36 +280,34 @@ export default function NewHorsePage() {
                         <label>Beskrivning</label>
                         <textarea
                             value={description} onChange={e => setDescription(e.target.value)}
-                            rows={4}
-                            placeholder="Berätta om hästen..."
-                            className={styles.textarea}
+                            rows={4} className={styles.textarea}
                         />
                     </div>
 
+                    {/* Pedigree Section - Pre-populated */}
                     <div className={styles.sectionHeader}>
                         <h2>Härstamning (3 led)</h2>
-                        <p className={styles.helpText}>Fyll i så mycket du vet. Lämnas tomt visas inget.</p>
                     </div>
 
                     <div className={styles.pedigreeGrid}>
                         <div className={styles.pedigreeColumn}>
                             <h3>Far (Sire)</h3>
-                            <input placeholder="Far" name="sire" className={styles.input} />
+                            <input name="sire" defaultValue={getPedigreeName('sire')} className={styles.input} />
                             <div className={styles.subGrid}>
                                 <div>
                                     <label>Farfar</label>
-                                    <input placeholder="Farfar" name="sire_sire" className={styles.input} />
+                                    <input name="sire_sire" defaultValue={getPedigreeName('sire_sire')} className={styles.input} />
                                     <div className={styles.microGrid}>
-                                        <input placeholder="Farfars Far" name="sire_sire_sire" className={styles.microInput} />
-                                        <input placeholder="Farfars Mor" name="sire_sire_dam" className={styles.microInput} />
+                                        <input name="sire_sire_sire" defaultValue={getPedigreeName('sire_sire_sire')} className={styles.microInput} />
+                                        <input name="sire_sire_dam" defaultValue={getPedigreeName('sire_sire_dam')} className={styles.microInput} />
                                     </div>
                                 </div>
                                 <div>
                                     <label>Farmor</label>
-                                    <input placeholder="Farmor" name="sire_dam" className={styles.input} />
+                                    <input name="sire_dam" defaultValue={getPedigreeName('sire_dam')} className={styles.input} />
                                     <div className={styles.microGrid}>
-                                        <input placeholder="Farmors Far" name="sire_dam_sire" className={styles.microInput} />
-                                        <input placeholder="Farmors Mor" name="sire_dam_dam" className={styles.microInput} />
+                                        <input name="sire_dam_sire" defaultValue={getPedigreeName('sire_dam_sire')} className={styles.microInput} />
+                                        <input name="sire_dam_dam" defaultValue={getPedigreeName('sire_dam_dam')} className={styles.microInput} />
                                     </div>
                                 </div>
                             </div>
@@ -263,22 +315,22 @@ export default function NewHorsePage() {
 
                         <div className={styles.pedigreeColumn}>
                             <h3>Mor (Dam)</h3>
-                            <input placeholder="Mor" name="dam" className={styles.input} />
+                            <input name="dam" defaultValue={getPedigreeName('dam')} className={styles.input} />
                             <div className={styles.subGrid}>
                                 <div>
                                     <label>Morfar</label>
-                                    <input placeholder="Morfar" name="dam_sire" className={styles.input} />
+                                    <input name="dam_sire" defaultValue={getPedigreeName('dam_sire')} className={styles.input} />
                                     <div className={styles.microGrid}>
-                                        <input placeholder="Morfars Far" name="dam_sire_sire" className={styles.microInput} />
-                                        <input placeholder="Morfars Mor" name="dam_sire_dam" className={styles.microInput} />
+                                        <input name="dam_sire_sire" defaultValue={getPedigreeName('dam_sire_sire')} className={styles.microInput} />
+                                        <input name="dam_sire_dam" defaultValue={getPedigreeName('dam_sire_dam')} className={styles.microInput} />
                                     </div>
                                 </div>
                                 <div>
                                     <label>Mormor</label>
-                                    <input placeholder="Mormor" name="dam_dam" className={styles.input} />
+                                    <input name="dam_dam" defaultValue={getPedigreeName('dam_dam')} className={styles.input} />
                                     <div className={styles.microGrid}>
-                                        <input placeholder="Mormors Far" name="dam_dam_sire" className={styles.microInput} />
-                                        <input placeholder="Mormors Mor" name="dam_dam_dam" className={styles.microInput} />
+                                        <input name="dam_dam_sire" defaultValue={getPedigreeName('dam_dam_sire')} className={styles.microInput} />
+                                        <input name="dam_dam_dam" defaultValue={getPedigreeName('dam_dam_dam')} className={styles.microInput} />
                                     </div>
                                 </div>
                             </div>
@@ -286,8 +338,8 @@ export default function NewHorsePage() {
                     </div>
 
                     <div className={styles.actions}>
-                        <button type="submit" disabled={loading} className={styles.submitBtn}>
-                            {loading ? 'Sparar...' : 'Spara Häst'}
+                        <button type="submit" disabled={saving} className={styles.submitBtn}>
+                            {saving ? 'Sparar...' : 'Uppdatera Häst'}
                         </button>
                     </div>
                 </form>

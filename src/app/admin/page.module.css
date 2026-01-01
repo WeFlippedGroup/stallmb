@@ -88,6 +88,23 @@
     background-color: #fafafa;
 }
 
+.editBtn {
+    background: white;
+    border: 1px solid #dbeafe;
+    color: #3b82f6;
+    padding: 0.5rem;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.editBtn:hover {
+    background: #dbeafe;
+}
+
 .deleteBtn {
     background: white;
     border: 1px solid #fee2e2;
