@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
         const data = await resend.emails.send({
             from: 'StallMB Kontakt <onboarding@resend.dev>', // Update this if you have a verified domain
-            to: ['info@stallmb.com'], // The owner's email
+            to: ['marinabengtsson@outlook.com'], // The owner's email
             replyTo: email,
             subject: `Nytt meddelande från ${name} via hemsidan`,
             text: `
