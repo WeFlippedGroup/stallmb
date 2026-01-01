@@ -1,5 +1,5 @@
 import { getHorses } from '@/lib/data';
-import HorseCard from '@/components/HorseCard';
+import HorseBrowser from '@/components/HorseBrowser';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import styles from './page.module.css';
@@ -24,20 +24,7 @@ export default async function HorsesPage() {
             </div>
 
             <div className="container" style={{ margin: '4rem auto' }}>
-                {/* Simple Filter placeholder - could be made client-side functional later */}
-                <div className={styles.filterBar}>
-                    <span className={styles.activeFilter}>Alla</span>
-                    <span className={styles.filter}>Till Salu</span>
-                    <span className={styles.filter}>Avelston</span>
-                    <span className={styles.filter}>Hingstar</span>
-                    <span className={styles.filter}>Unghästar</span>
-                </div>
-
-                <div className={styles.grid}>
-                    {horses.map((horse) => (
-                        <HorseCard key={horse.id} horse={horse} />
-                    ))}
-                </div>
+                <HorseBrowser initialHorses={horses} />
             </div>
 
             <Footer />
