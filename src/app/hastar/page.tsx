@@ -29,6 +29,7 @@ export default async function HorsesPage() {
                     <span className={styles.activeFilter}>Alla</span>
                     <span className={styles.filter}>Till Salu</span>
                     <span className={styles.filter}>Avelston</span>
+                    <span className={styles.filter}>Hingstar</span>
                     <span className={styles.filter}>Unghästar</span>
                 </div>
 

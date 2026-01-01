@@ -1,16 +1,21 @@
 :root {
   /* Colors */
-  --color-primary: #1A3C34; /* Hunter Green / Deep Green */
-  --color-accent: #D4AF37; /* Gold / Brass */
-  --color-accent-light: #F4E5B0; /* Pale Gold */
-  --color-background: #F9F9F7; /* Warm Off-white / Eggshell */
+  --color-primary: #1A3C34;
+  /* Hunter Green / Deep Green */
+  --color-accent: #D4AF37;
+  /* Gold / Brass */
+  --color-accent-light: #F4E5B0;
+  /* Pale Gold */
+  --color-background: #F9F9F7;
+  /* Warm Off-white / Eggshell */
   --color-text: #111111;
   --color-text-muted: #555555;
   --color-white: #FFFFFF;
 
   /* Fonts */
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-  --font-serif: "Times New Roman", Times, serif; /* Can add a better serif import later */
+  --font-serif: "Times New Roman", Times, serif;
+  /* Can add a better serif import later */
 
   /* Spacing */
   --spacing-container: 1200px;
@@ -52,10 +57,25 @@ img {
   padding: 0 var(--spacing-padding);
 }
 
-.text-primary { color: var(--color-primary); }
-.bg-primary { background-color: var(--color-primary); }
-.text-accent { color: var(--color-accent); }
-.bg-accent { background-color: var(--color-accent); }
+.text-primary {
+  color: var(--color-primary);
+}
+
+.bg-primary {
+  background-color: var(--color-primary);
+}
+
+.text-accent {
+  color: var(--color-accent);
+}
+
+.bg-accent {
+  background-color: var(--color-accent);
+}
+
+.text-white {
+  color: var(--color-white);
+}
 
 /* Glassmorphism */
 .glass {
@@ -66,10 +86,12 @@ img {
 }
 
 .glass-dark {
-  background: rgba(26, 60, 52, 0.85); /* Primary color with opacity */
+  background: rgba(26, 60, 52, 0.85);
+  /* Primary color with opacity */
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(212, 175, 55, 0.1); /* Subtle gold border */
+  border-bottom: 1px solid rgba(212, 175, 55, 0.1);
+  /* Subtle gold border */
 }
 
 /* Typography Utilities */
@@ -102,6 +124,13 @@ img {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
