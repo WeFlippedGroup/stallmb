@@ -123,14 +123,16 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
                             </div>
                         </div>
 
-                        {/* Contact CTA */}
-                        <div className={styles.contactCard}>
-                            <h3>Intresserad av {horse.name}?</h3>
-                            <p>Kontakta oss för mer information, filmer eller provridning.</p>
-                            <Link href="/kontakt" className={styles.contactBtn}>
-                                Kontakta Oss
-                            </Link>
-                        </div>
+                        {/* Contact CTA - Only shown if for sale */}
+                        {horse.category === 'sale' && (
+                            <div className={styles.contactCard}>
+                                <h3>Intresserad av {horse.name}?</h3>
+                                <p>Kontakta oss för mer information, filmer eller provridning.</p>
+                                <Link href="/kontakt" className={styles.contactBtn}>
+                                    Kontakta Oss
+                                </Link>
+                            </div>
+                        )}
 
                     </div>
                 </div>
