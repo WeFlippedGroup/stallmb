@@ -30,7 +30,14 @@ export default function ContactForm() {
             const data = await res.json();
 
             if (!res.ok) {
-                throw new Error(data.error || 'Något gick fel.');
+                let msg = 'Något gick fel.';
+                if (data.error) {
+                    if (typeof data.error === 'string') msg = data.error;
+                    else if (typeof data.error === 'object') {
+                        msg = (data.error as any).message || JSON.stringify(data.error);
+                    }
+                }
+                throw new Error(msg);
             }
 
             setStatus('success');
