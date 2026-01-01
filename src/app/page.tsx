@@ -31,9 +31,9 @@ export default async function Home() {
       <section className={styles.previewSection}>
         <div className="container">
           <div className={styles.sectionHeader}>
-            <h3 className="h2 text-primary">Våra Hästar</h3>
+            <h3 className="h2 text-primary">Våra hästar</h3>
             <p className="p" style={{ maxWidth: '600px', margin: '1rem auto 0', opacity: 0.8 }}>
-              Här presenterar vi våra avelston, unghästar och de hästar vi har till salu.
+              Här presenterar vi våra avelston, hingstar och föl samt de som är till salu.
             </p>
           </div>
 

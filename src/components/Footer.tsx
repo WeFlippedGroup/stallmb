@@ -27,7 +27,7 @@ export default function Footer() {
                     <div className={styles.linksCol}>
                         <h4 className={styles.heading}>Utforska</h4>
                         <Link href="/" className={styles.link}>Hem</Link>
-                        <Link href="/hastar" className={styles.link}>Våra Hästar</Link>
+                        <Link href="/hastar" className={styles.link}>Våra hästar</Link>
                         <Link href="/connemara" className={styles.link}>Rasen Connemara</Link>
                     </div>
 

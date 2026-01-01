@@ -51,7 +51,7 @@ export default function Navbar() {
                     {/* Desktop Menu */}
                     <div className={styles.desktopMenu}>
                         <Link href="/" className={styles.link}>Hem</Link>
-                        <Link href="/hastar" className={styles.link}>Våra Hästar</Link>
+                        <Link href="/hastar" className={styles.link}>Våra hästar</Link>
                         <Link href="/om-oss" className={styles.link}>Om StallMB</Link>
                         <Link href="/kontakt" className={styles.link}>Kontakt</Link>
                     </div>
@@ -70,7 +70,7 @@ export default function Navbar() {
             <div className={clsx(styles.mobileMenu, isMobileMenuOpen && styles.open)}>
                 <div className={styles.mobileLinks}>
                     <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>Hem</Link>
-                    <Link href="/hastar" onClick={() => setIsMobileMenuOpen(false)}>Våra Hästar</Link>
+                    <Link href="/hastar" onClick={() => setIsMobileMenuOpen(false)}>Våra hästar</Link>
                     <Link href="/om-oss" onClick={() => setIsMobileMenuOpen(false)}>Om StallMB</Link>
                     <Link href="/kontakt" onClick={() => setIsMobileMenuOpen(false)}>Kontakt</Link>
                 </div>
