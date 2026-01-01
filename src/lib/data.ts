@@ -27,12 +27,28 @@ export async function getHorse(id: string): Promise<Horse | undefined> {
             .eq('id', id)
             .single();
 
-        if (!error && data) {
-            return data as Horse;
+        let horseData = data as Horse | undefined;
+
+        // If not found in DB by ID, check if it's a mock ID
+        if (error || !horseData) {
+            horseData = MOCK_HORSES.find((h) => h.id === id);
         }
 
-        // If not found in DB (or error), fallback to mock data
-        return MOCK_HORSES.find((h) => h.id === id);
+        // Enhancement: If we have a horse (from DB or Mock), try to find extra data (images) 
+        // from local mock data if the DB record is missing it.
+        // We match by name since IDs might differ between DB and Mock.
+        if (horseData) {
+            const mockMatch = MOCK_HORSES.find(m => m.name === horseData?.name || m.id === horseData?.id);
+            if (mockMatch && mockMatch.images && (!horseData.images || horseData.images.length === 0)) {
+                // Merge images from mock to the result
+                horseData = {
+                    ...horseData,
+                    images: mockMatch.images
+                };
+            }
+        }
+
+        return horseData;
     } catch (e) {
         // Fallback to mock data on exception
         return MOCK_HORSES.find((h) => h.id === id);

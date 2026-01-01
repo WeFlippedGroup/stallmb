@@ -69,13 +69,30 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
                                     alt={horse.name}
                                     fill
                                     priority
-                                    style={{ objectFit: 'cover' }}
+                                    style={{ objectFit: 'contain' }} // Changed to contain to show full image
                                     className={styles.mainImage}
                                 />
                             ) : (
                                 <div className={styles.imagePlaceholder}>Ingen bild tillgänglig</div>
                             )}
                         </div>
+
+                        {/* Image Gallery */}
+                        {horse.images && horse.images.length > 1 && (
+                            <div className={styles.imageGallery}>
+                                {horse.images.map((img, index) => (
+                                    <div key={index} className={styles.galleryItem}>
+                                        <Image
+                                            src={img}
+                                            alt={`${horse.name} ${index + 1}`}
+                                            width={200}
+                                            height={150}
+                                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+                                        />
+                                    </div>
+                                ))}
+                            </div>
+                        )}
                     </div>
 
                     {/* Right Column: Info */}

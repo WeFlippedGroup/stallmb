@@ -13,6 +13,7 @@ export interface Horse {
     age: string;
     description: string;
     image_url: string;
+    images?: string[];
     category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | '';
     pedigree?: any;
 }
