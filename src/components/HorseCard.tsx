@@ -14,8 +14,9 @@ export interface Horse {
     description: string;
     image_url: string;
     images?: string[];
-    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | 'loaned' | '';
+    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | 'loaned' | 'foal' | '';
     pedigree?: any;
+    blabasen_link?: string;
 }
 
 interface HorseCardProps {
@@ -66,7 +67,8 @@ function getCategoryLabel(cat: string) {
         stallion: 'Hingst för avel',
         sold: 'Såld',
         reference: 'Tidigare häst',
-        loaned: 'Utlånad/Tävlas'
+        loaned: 'Utlånad/Tävlas',
+        foal: 'Årsföl'
     };
     return map[cat] || cat;
 }

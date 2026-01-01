@@ -9,8 +9,7 @@ import clsx from 'clsx';
 interface HorseBrowserProps {
     initialHorses: Horse[];
 }
-
-type FilterType = 'all' | 'sale' | 'breeding' | 'stallion' | 'youngster' | 'loaned';
+type FilterType = 'all' | 'sale' | 'breeding' | 'stallion' | 'youngster' | 'loaned' | 'foal';
 
 export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
     const [filter, setFilter] = useState<FilterType>('all');
@@ -21,6 +20,7 @@ export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
         if (filter === 'breeding') return horse.category === 'breeding';
         if (filter === 'stallion') return horse.category === 'stallion';
         if (filter === 'youngster') return horse.category === 'youngster';
+        if (filter === 'foal') return horse.category === 'foal';
         if (filter === 'loaned') return horse.category === 'loaned';
         return true;
     });
@@ -57,6 +57,12 @@ export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
                     className={clsx(styles.filter, filter === 'youngster' && styles.activeFilter)}
                 >
                     Unghästar
+                </button>
+                <button
+                    onClick={() => setFilter('foal')}
+                    className={clsx(styles.filter, filter === 'foal' && styles.activeFilter)}
+                >
+                    Årsföl
                 </button>
                 <button
                     onClick={() => setFilter('loaned')}

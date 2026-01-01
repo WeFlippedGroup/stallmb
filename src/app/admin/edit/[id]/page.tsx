@@ -23,6 +23,7 @@ export default function EditHorsePage() {
     const [age, setAge] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('breeding');
+    const [blabasenLink, setBlabasenLink] = useState('');
 
     // Image State
     // We store the full array of image URLs here
@@ -54,6 +55,7 @@ export default function EditHorsePage() {
                 setDescription(data.description || '');
                 setCategory(data.category || 'breeding');
                 setPedigree(data.pedigree || {});
+                setBlabasenLink(data.blabasen_link || '');
 
                 // Combine legacy image_url with new images array if present
                 // Priority: images array -> single image_url -> empty
@@ -162,7 +164,8 @@ export default function EditHorsePage() {
                     category,
                     image_url: images[0] || null, // Main image is always first
                     images: images, // Save all images
-                    pedigree: newPedigree
+                    pedigree: newPedigree,
+                    blabasen_link: blabasenLink
                 })
                 .eq('id', id);
 
@@ -271,8 +274,19 @@ export default function EditHorsePage() {
                                 <option value="retired">Pensionär</option>
                                 <option value="sold">Såld</option>
                                 <option value="reference">Tidigare häst / Referens</option>
+                                <option value="reference">Tidigare häst / Referens</option>
                                 <option value="loaned">Utlånad/Tävlas</option>
+                                <option value="foal">Årsföl</option>
                             </select>
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Länk till Blåbasen</label>
+                            <input
+                                value={blabasenLink} onChange={e => setBlabasenLink(e.target.value)}
+                                placeholder="https://blabasen.se/sh/..."
+                                className={styles.input}
+                            />
                         </div>
                     </div>
 

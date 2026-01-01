@@ -19,6 +19,7 @@ export default function NewHorsePage() {
     const [age, setAge] = useState('');
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('breeding');
+    const [blabasenLink, setBlabasenLink] = useState('');
 
     // Image State
     const [images, setImages] = useState<string[]>([]);
@@ -111,7 +112,8 @@ export default function NewHorsePage() {
                     category,
                     image_url: images[0] || null, // First image is main
                     images: images, // All images
-                    pedigree: pedigree
+                    pedigree: pedigree,
+                    blabasen_link: blabasenLink
                 });
 
             if (insertError) throw insertError;
@@ -217,8 +219,19 @@ export default function NewHorsePage() {
                                 <option value="retired">Pensionär</option>
                                 <option value="sold">Såld</option>
                                 <option value="reference">Tidigare häst / Referens</option>
+                                <option value="reference">Tidigare häst / Referens</option>
                                 <option value="loaned">Utlånad/Tävlas</option>
+                                <option value="foal">Årsföl</option>
                             </select>
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Länk till Blåbasen</label>
+                            <input
+                                value={blabasenLink} onChange={e => setBlabasenLink(e.target.value)}
+                                placeholder="https://blabasen.se/sh/..."
+                                className={styles.input}
+                            />
                         </div>
                     </div>
 

@@ -1,10 +1,11 @@
+
 import { getHorses, getHorse } from '@/lib/data';
 import HorseDetailGallery from '@/components/HorseDetailGallery';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, Info, Trophy, FileText, Calendar, Tag } from 'lucide-react';
+import { ChevronLeft, Info, Trophy, FileText, Calendar, Tag, ExternalLink } from 'lucide-react';
 import styles from './page.module.css';
 
 export const dynamic = 'force-dynamic';
@@ -85,11 +86,28 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
                                 <Calendar size={18} className="text-primary" />
                                 <span><strong>Ålder:</strong> {horse.age}</span>
                             </div>
+
+                            {horse.blabasen_link && (
+                                <div className={styles.detailItem}>
+                                    <ExternalLink size={18} className="text-primary" />
+                                    <a
+                                        href={horse.blabasen_link}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        style={{ textDecoration: 'underline', color: 'inherit' }}
+                                    >
+                                        Se på Blåbasen
+                                    </a>
+                                </div>
+                            )}
+
                             {/* Placeholders for future data expansion */}
+                            {/* 
                             <div className={styles.detailItem}>
                                 <Trophy size={18} className="text-primary" />
                                 <span><strong>Nivå:</strong> Ej angivet</span>
                             </div>
+                            */}
                         </div>
 
                         {/* Contact CTA - Only shown if for sale */}
@@ -209,7 +227,10 @@ function getCategoryLabel(cat: string) {
         youngster: 'Unghäst',
         retired: 'Pensionär',
         stallion: 'Hingst för avel',
-        loaned: 'Utlånad/Tävlas'
+        sold: 'Såld',
+        reference: 'Tidigare häst',
+        loaned: 'Utlånad/Tävlas',
+        foal: 'Årsföl'
     };
     return map[cat] || cat;
 }
