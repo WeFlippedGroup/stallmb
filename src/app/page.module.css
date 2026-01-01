@@ -46,3 +46,25 @@
   border: 1px solid #eee;
   color: #ccc;
 }
+
+.viewAllContainer {
+  display: flex;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.viewAllLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  text-decoration: none;
+  transition: gap 0.2s;
+}
+
+.viewAllLink:hover {
+  gap: 0.75rem;
+  text-decoration: underline;
+}

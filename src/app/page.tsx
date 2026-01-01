@@ -1,3 +1,5 @@
+import Link from 'next/link';
+import { ArrowRight } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Hero from '@/components/Hero';
 import Footer from '@/components/Footer';
@@ -41,6 +43,12 @@ export default async function Home() {
             {horses.slice(0, 6).map((horse) => (
               <HorseCard key={horse.id} horse={horse} />
             ))}
+          </div>
+
+          <div className={styles.viewAllContainer}>
+            <Link href="/hastar" className={styles.viewAllLink}>
+              Se alla hästar <ArrowRight size={20} />
+            </Link>
           </div>
         </div>
       </section>
