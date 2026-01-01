@@ -143,6 +143,27 @@ export const MOCK_HORSES: Horse[] = [
         }
     },
     {
+        id: 'grans-diamond-surf',
+        name: 'Gräns Diamond Surf',
+        breed: 'Connemara',
+        age: '2002',
+        description: 'RC 100. En fantastisk hingst med fina meriter.',
+        image_url: '/assets/horses/grans-diamond-surf/1.jpg',
+        images: [
+            '/assets/horses/grans-diamond-surf/1.jpg',
+            '/assets/horses/grans-diamond-surf/2.jpg',
+            '/assets/horses/grans-diamond-surf/3.jpg',
+            '/assets/horses/grans-diamond-surf/4.jpg',
+            '/assets/horses/grans-diamond-surf/5.jpg'
+        ],
+        category: 'stallion',
+        pedigree: {
+            sire: { name: 'Gräns Ruben RC 67', id: '' },
+            dam: { name: '', id: '' },
+            damsire: { name: 'Hagens Jaguar RC 58', id: '' }
+        }
+    },
+    {
         id: 'midnight-lady',
         name: 'Midnight Lady',
         breed: 'Connemara',
