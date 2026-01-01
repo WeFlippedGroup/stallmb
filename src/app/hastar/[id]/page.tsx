@@ -17,8 +17,9 @@ export async function generateStaticParams() {
     }));
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-    const horse = await getHorse(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const horse = await getHorse(id);
     if (!horse) return { title: 'Häst hittades inte' };
     return {
         title: `${horse.name} | Stall MB`,
@@ -26,8 +27,9 @@ export async function generateMetadata({ params }: { params: { id: string } }) {
     };
 }
 
-export default async function HorseDetailPage({ params }: { params: { id: string } }) {
-    const horse = await getHorse(params.id);
+export default async function HorseDetailPage({ params }: { params: Promise<{ id: string }> }) {
+    const { id } = await params;
+    const horse = await getHorse(id);
 
     if (!horse) {
         return (
