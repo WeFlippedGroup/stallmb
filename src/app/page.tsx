@@ -39,10 +39,17 @@ export default async function Home() {
             </p>
           </div>
 
+
           <div className={styles.gridPlaceholder}>
-            {horses.slice(0, 6).map((horse) => (
-              <HorseCard key={horse.id} horse={horse} />
-            ))}
+            {(() => {
+              const foals = horses.filter(h => h.category === 'foal');
+              const others = horses.filter(h => h.category !== 'foal');
+              const sortedHorses = [...foals, ...others].slice(0, 6);
+
+              return sortedHorses.map((horse) => (
+                <HorseCard key={horse.id} horse={horse} />
+              ));
+            })()}
           </div>
 
           <div className={styles.viewAllContainer}>
