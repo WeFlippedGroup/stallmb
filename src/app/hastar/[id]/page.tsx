@@ -1,4 +1,5 @@
 import { getHorses, getHorse } from '@/lib/data';
+import HorseDetailGallery from '@/components/HorseDetailGallery';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
@@ -60,40 +61,8 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
 
                 <div className={styles.contentGrid}>
 
-                    {/* Left Column: Image */}
-                    <div className={styles.imageColumn}>
-                        <div className={styles.mainImageWrapper}>
-                            {horse.image_url ? (
-                                <Image
-                                    src={horse.image_url}
-                                    alt={horse.name}
-                                    fill
-                                    priority
-                                    style={{ objectFit: 'contain' }} // Changed to contain to show full image
-                                    className={styles.mainImage}
-                                />
-                            ) : (
-                                <div className={styles.imagePlaceholder}>Ingen bild tillgänglig</div>
-                            )}
-                        </div>
-
-                        {/* Image Gallery */}
-                        {horse.images && horse.images.length > 1 && (
-                            <div className={styles.imageGallery}>
-                                {horse.images.map((img, index) => (
-                                    <div key={index} className={styles.galleryItem}>
-                                        <Image
-                                            src={img}
-                                            alt={`${horse.name} ${index + 1}`}
-                                            width={200}
-                                            height={150}
-                                            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-                                        />
-                                    </div>
-                                ))}
-                            </div>
-                        )}
-                    </div>
+                    {/* Left Column: Image Gallery */}
+                    <HorseDetailGallery horse={horse} />
 
                     {/* Right Column: Info */}
                     <div className={styles.infoColumn}>
