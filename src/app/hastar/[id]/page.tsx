@@ -208,7 +208,8 @@ function getCategoryLabel(cat: string) {
         sale: 'Till Salu',
         youngster: 'Unghäst',
         retired: 'Pensionär',
-        stallion: 'Hingst för avel'
+        stallion: 'Hingst för avel',
+        loaned: 'Utlånad/Tävlas'
     };
     return map[cat] || cat;
 }

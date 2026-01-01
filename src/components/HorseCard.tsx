@@ -14,7 +14,7 @@ export interface Horse {
     description: string;
     image_url: string;
     images?: string[];
-    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | '';
+    category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | 'loaned' | '';
     pedigree?: any;
 }
 
@@ -65,7 +65,8 @@ function getCategoryLabel(cat: string) {
         retired: 'Pensionär',
         stallion: 'Hingst för avel',
         sold: 'Såld',
-        reference: 'Tidigare häst'
+        reference: 'Tidigare häst',
+        loaned: 'Utlånad/Tävlas'
     };
     return map[cat] || cat;
 }

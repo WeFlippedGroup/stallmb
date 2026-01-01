@@ -10,7 +10,7 @@ interface HorseBrowserProps {
     initialHorses: Horse[];
 }
 
-type FilterType = 'all' | 'sale' | 'breeding' | 'stallion' | 'youngster';
+type FilterType = 'all' | 'sale' | 'breeding' | 'stallion' | 'youngster' | 'loaned';
 
 export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
     const [filter, setFilter] = useState<FilterType>('all');
@@ -21,6 +21,7 @@ export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
         if (filter === 'breeding') return horse.category === 'breeding';
         if (filter === 'stallion') return horse.category === 'stallion';
         if (filter === 'youngster') return horse.category === 'youngster';
+        if (filter === 'loaned') return horse.category === 'loaned';
         return true;
     });
 
@@ -56,6 +57,12 @@ export default function HorseBrowser({ initialHorses }: HorseBrowserProps) {
                     className={clsx(styles.filter, filter === 'youngster' && styles.activeFilter)}
                 >
                     Unghästar
+                </button>
+                <button
+                    onClick={() => setFilter('loaned')}
+                    className={clsx(styles.filter, filter === 'loaned' && styles.activeFilter)}
+                >
+                    Utlånad/Tävlas
                 </button>
             </div>
 

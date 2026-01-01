@@ -83,6 +83,46 @@ export const MOCK_HORSES: Horse[] = [
         }
     },
     {
+        id: 'mbs-show-em-off',
+        name: 'MB’s Show Em Off',
+        breed: 'Connemara',
+        age: '2020',
+        description: '”Sessan”. M1-752033033207559.',
+        image_url: '/assets/horses/mbs-show-em-off/1.jpg',
+        images: [
+            '/assets/horses/mbs-show-em-off/1.jpg',
+            '/assets/horses/mbs-show-em-off/2.jpg',
+            '/assets/horses/mbs-show-em-off/3.jpg'
+        ],
+        category: 'loaned',
+        pedigree: {
+            sire: { name: 'Show-La-Pan', id: '' },
+            dam: { name: '', id: '' },
+            damsire: { name: 'Robe Earl', id: '' }
+        }
+    },
+    {
+        id: 'robe-emily',
+        name: 'Robe Emily',
+        breed: 'Connemara',
+        age: '2016',
+        description: 'M1-372004000033440. Imp Irland. Tävlas främst i fälttävlan.',
+        image_url: '/assets/horses/robe-emily/1.jpg',
+        images: [
+            '/assets/horses/robe-emily/1.jpg',
+            '/assets/horses/robe-emily/2.jpg',
+            '/assets/horses/robe-emily/3.jpg',
+            '/assets/horses/robe-emily/4.jpg',
+            '/assets/horses/robe-emily/5.jpg'
+        ],
+        category: 'loaned',
+        pedigree: {
+            sire: { name: 'Robe Earl', id: '' },
+            dam: { name: '', id: '' },
+            damsire: { name: 'Templebready Bo’Sun', id: '' }
+        }
+    },
+    {
         id: 'midnight-lady',
         name: 'Midnight Lady',
         breed: 'Connemara',
