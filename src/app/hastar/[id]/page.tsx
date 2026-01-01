@@ -6,6 +6,9 @@ import Link from 'next/link';
 import { ChevronLeft, Info, Trophy, FileText, Calendar, Tag } from 'lucide-react';
 import styles from './page.module.css';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Generate static params for all horses at build time (optional but good for performance)
 export async function generateStaticParams() {
     const horses = await getHorses();
