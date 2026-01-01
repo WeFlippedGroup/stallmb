@@ -5,7 +5,6 @@ import Link from 'next/link';
 import styles from './page.module.css';
 
 import { getGuestbookEntries } from '@/lib/data';
-import ContactForm from '@/components/ContactForm';
 import Guestbook from '@/components/Guestbook';
 
 // Increase revalidation time for guestbook updates
@@ -39,13 +38,14 @@ export default async function ContactPage() {
                         <a href="mailto:info@stallmb.com" className={styles.link}>info@stallmb.com</a>
                     </div>
 
+
                     <div className={styles.infoCard}>
                         <div className={styles.iconCircle}>
                             <MapPin size={32} />
                         </div>
                         <h3 className="h3">Besök Oss</h3>
                         <p className={styles.cardText}>Vi finns på den vackra landsbygden utanför Töreboda.</p>
-                        <span className={styles.address}>Töreboda, Sverige</span>
+                        <span className={styles.address}>Rud Brånäng 9<br />54 590 Töreboda</span>
                     </div>
 
                     <div className={styles.infoCard}>
@@ -65,12 +65,9 @@ export default async function ContactPage() {
                     </div>
                 </div>
 
-                {/* New Section: Contact Form & Guestbook */}
+                {/* Guestbook Section */}
                 <div className={styles.interactionSection}>
-                    <div className={styles.formContainer}>
-                        <ContactForm />
-                    </div>
-                    <div className={styles.guestbookContainer}>
+                    <div className={styles.guestbookContainer} style={{ maxWidth: '800px', margin: '0 auto', width: '100%' }}>
                         <Guestbook initialEntries={guestbookEntries} />
                     </div>
                 </div>
