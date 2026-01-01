@@ -1,9 +1,14 @@
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import Image from 'next/image';
+import { getSiteContent } from '@/lib/data';
 import styles from './page.module.css';
 
-export default function ConnemaraPage() {
+export const revalidate = 0;
+
+export default async function ConnemaraPage() {
+    const content = await getSiteContent('connemara_page');
+
     return (
         <main className={styles.main}>
             <Navbar />
@@ -30,9 +35,12 @@ export default function ConnemaraPage() {
                                 på 1500-talet blandades med de lokala vilda ponnyerna, vilket bidrog till rasens ädla drag.
                             </p>
                         </div>
-                        <div className={styles.imageCol}>
-                            {/* Placeholder for a historic or landscape image */}
-                            <div className={styles.placeholderImage}>Landskap från Connemara</div>
+                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                            {content?.origin_image ? (
+                                <Image src={content.origin_image} alt="Connemaras historia" fill style={{ objectFit: 'cover' }} />
+                            ) : (
+                                <div className={styles.placeholderImage}>Landskap från Connemara</div>
+                            )}
                         </div>
                     </section>
 
@@ -47,8 +55,12 @@ export default function ConnemaraPage() {
                                 De rör sig med en fri och vägvinnande steglängd som gör dem till utmärkta ridhästar för både barn och vuxna.
                             </p>
                         </div>
-                        <div className={styles.imageCol}>
-                            <div className={styles.placeholderImage}>Connemara profil</div>
+                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                            {content?.character_image ? (
+                                <Image src={content.character_image} alt="Connemara karaktär" fill style={{ objectFit: 'cover' }} />
+                            ) : (
+                                <div className={styles.placeholderImage}>Connemara profil</div>
+                            )}
                         </div>
                     </section>
 
@@ -63,8 +75,12 @@ export default function ConnemaraPage() {
                                 för den satsande tävlingsryttaren som vill ha en bästa vän att klättra i klasserna med.
                             </p>
                         </div>
-                        <div className={styles.imageCol}>
-                            <div className={styles.placeholderImage}>Hoppning / Tävling</div>
+                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                            {content?.usage_image ? (
+                                <Image src={content.usage_image} alt="Användningsområden" fill style={{ objectFit: 'cover' }} />
+                            ) : (
+                                <div className={styles.placeholderImage}>Hoppning / Tävling</div>
+                            )}
                         </div>
                     </section>
 

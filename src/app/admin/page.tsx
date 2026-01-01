@@ -42,6 +42,10 @@ export default function AdminDashboard() {
         <div>
             <div className={styles.header}>
                 <h1 className={styles.title}>Mina Hästar</h1>
+                <Link href="/admin/content" className={styles.secondaryButton}>
+                    <Edit2 size={20} />
+                    Redigera sidor
+                </Link>
                 <Link href="/admin/new" className={styles.addButton}>
                     <Plus size={20} />
                     Lägg till ny häst

@@ -85,3 +85,18 @@ export async function addGuestbookEntry(name: string, message: string) {
         .insert([{ name, message }])
         .select();
 }
+
+export async function getSiteContent(id: string) {
+    try {
+        const { data, error } = await supabase
+            .from('site_content')
+            .select('content')
+            .eq('id', id)
+            .single();
+
+        if (error || !data) return null;
+        return data.content;
+    } catch (e) {
+        return null;
+    }
+}

@@ -5,6 +5,27 @@
     margin-bottom: 2rem;
 }
 
+.secondaryButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: white;
+    color: var(--color-primary);
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 2px solid var(--color-primary);
+    height: 48px;
+}
+
+.secondaryButton:hover {
+    background-color: #f0fdf4;
+    /* Light green tint */
+}
+
 .title {
     font-size: 2rem;
     font-weight: 700;
