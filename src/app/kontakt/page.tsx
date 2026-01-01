@@ -4,7 +4,16 @@ import { Mail, MapPin, Phone, Facebook, Instagram } from 'lucide-react';
 import Link from 'next/link';
 import styles from './page.module.css';
 
-export default function ContactPage() {
+import { getGuestbookEntries } from '@/lib/data';
+import ContactForm from '@/components/ContactForm';
+import Guestbook from '@/components/Guestbook';
+
+// Increase revalidation time for guestbook updates
+export const revalidate = 0; // Or keep it simple with 0 to always get fresh data
+
+export default async function ContactPage() {
+    const guestbookEntries = await getGuestbookEntries();
+
     return (
         <main className={styles.main}>
             <Navbar />
@@ -19,8 +28,8 @@ export default function ContactPage() {
             </div>
 
             <div className="container">
+                {/* Contact Info Cards */}
                 <div className={styles.grid}>
-
                     <div className={styles.infoCard}>
                         <div className={styles.iconCircle}>
                             <Mail size={32} />
@@ -54,7 +63,16 @@ export default function ContactPage() {
                             </a>
                         </div>
                     </div>
+                </div>
 
+                {/* New Section: Contact Form & Guestbook */}
+                <div className={styles.interactionSection}>
+                    <div className={styles.formContainer}>
+                        <ContactForm />
+                    </div>
+                    <div className={styles.guestbookContainer}>
+                        <Guestbook initialEntries={guestbookEntries} />
+                    </div>
                 </div>
             </div>
 

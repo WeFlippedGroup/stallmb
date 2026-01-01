@@ -17,3 +17,34 @@ export async function getHorses(): Promise<Horse[]> {
         return MOCK_HORSES;
     }
 }
+
+export type GuestbookEntry = {
+    id: number;
+    name: string;
+    message: string;
+    created_at: string;
+};
+
+export async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
+    try {
+        const { data, error } = await supabase
+            .from('guestbook')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+        if (error || !data) {
+            console.error('Error fetching guestbook:', error);
+            return [];
+        }
+        return data as GuestbookEntry[];
+    } catch (e) {
+        return [];
+    }
+}
+
+export async function addGuestbookEntry(name: string, message: string) {
+    return await supabase
+        .from('guestbook')
+        .insert([{ name, message }])
+        .select();
+}

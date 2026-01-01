@@ -99,3 +99,22 @@
     background-color: var(--color-primary);
     color: white;
 }
+
+.interactionSection {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    margin-bottom: 6rem;
+}
+
+@media (min-width: 900px) {
+    .interactionSection {
+        grid-template-columns: 1fr 1fr;
+        align-items: start;
+    }
+}
+
+.formContainer,
+.guestbookContainer {
+    width: 100%;
+}
