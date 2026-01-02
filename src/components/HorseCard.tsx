@@ -17,6 +17,7 @@ export interface Horse {
     category: 'breeding' | 'sale' | 'youngster' | 'retired' | 'stallion' | 'sold' | 'reference' | 'loaned' | 'foal' | '';
     pedigree?: any;
     blabasen_link?: string;
+    results?: string;
 }
 
 interface HorseCardProps {

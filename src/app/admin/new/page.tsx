@@ -20,6 +20,7 @@ export default function NewHorsePage() {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('breeding');
     const [blabasenLink, setBlabasenLink] = useState('');
+    const [results, setResults] = useState('');
 
     // Image State
     const [images, setImages] = useState<string[]>([]);
@@ -113,7 +114,8 @@ export default function NewHorsePage() {
                     image_url: images[0] || null, // First image is main
                     images: images, // All images
                     pedigree: pedigree,
-                    blabasen_link: blabasenLink
+                    blabasen_link: blabasenLink,
+                    results: results
                 });
 
             if (insertError) throw insertError;
@@ -241,6 +243,16 @@ export default function NewHorsePage() {
                             value={description} onChange={e => setDescription(e.target.value)}
                             rows={4}
                             placeholder="Berätta om hästen..."
+                            className={styles.textarea}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <label>Resultat & Meriter</label>
+                        <textarea
+                            value={results} onChange={e => setResults(e.target.value)}
+                            rows={4}
+                            placeholder="Tävlingsresultat, utmärkelser, bedömningar..."
                             className={styles.textarea}
                         />
                     </div>

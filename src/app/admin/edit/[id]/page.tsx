@@ -24,6 +24,7 @@ export default function EditHorsePage() {
     const [description, setDescription] = useState('');
     const [category, setCategory] = useState('breeding');
     const [blabasenLink, setBlabasenLink] = useState('');
+    const [results, setResults] = useState('');
 
     // Image State
     // We store the full array of image URLs here
@@ -56,6 +57,7 @@ export default function EditHorsePage() {
                 setCategory(data.category || 'breeding');
                 setPedigree(data.pedigree || {});
                 setBlabasenLink(data.blabasen_link || '');
+                setResults(data.results || '');
 
                 // Combine legacy image_url with new images array if present
                 // Priority: images array -> single image_url -> empty
@@ -165,7 +167,8 @@ export default function EditHorsePage() {
                     image_url: images[0] || null, // Main image is always first
                     images: images, // Save all images
                     pedigree: newPedigree,
-                    blabasen_link: blabasenLink
+                    blabasen_link: blabasenLink,
+                    results: results
                 })
                 .eq('id', id);
 
@@ -295,6 +298,16 @@ export default function EditHorsePage() {
                         <textarea
                             value={description} onChange={e => setDescription(e.target.value)}
                             rows={4} className={styles.textarea}
+                        />
+                    </div>
+
+                    <div className={styles.field}>
+                        <label>Resultat & Meriter</label>
+                        <textarea
+                            value={results} onChange={e => setResults(e.target.value)}
+                            rows={4}
+                            placeholder="Tävlingsresultat, utmärkelser, bedömningar..."
+                            className={styles.textarea}
                         />
                     </div>
 

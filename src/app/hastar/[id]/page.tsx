@@ -209,7 +209,13 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
                             <Trophy size={24} />
                             <h2>Resultat & Meriter</h2>
                         </div>
-                        <div className={styles.comingSoonBox}>Resultat kommer snart...</div>
+                        {horse.results ? (
+                            <div className="p" style={{ whiteSpace: 'pre-wrap' }}>
+                                {horse.results}
+                            </div>
+                        ) : (
+                            <div className={styles.comingSoonBox}>Inga resultat inlagda än.</div>
+                        )}
                     </div>
                 </div>
 
