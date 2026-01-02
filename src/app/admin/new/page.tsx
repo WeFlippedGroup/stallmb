@@ -248,11 +248,11 @@ export default function NewHorsePage() {
                     </div>
 
                     <div className={styles.field}>
-                        <label>Resultat & Meriter</label>
+                        <label>Övrig information</label>
                         <textarea
                             value={results} onChange={e => setResults(e.target.value)}
                             rows={4}
-                            placeholder="Tävlingsresultat, utmärkelser, bedömningar..."
+                            placeholder="Tävlingsresultat, utmärkelser, övrigt..."
                             className={styles.textarea}
                         />
                     </div>
