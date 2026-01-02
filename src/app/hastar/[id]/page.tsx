@@ -214,7 +214,7 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
                                 {horse.results}
                             </div>
                         ) : (
-                            <div className={styles.comingSoonBox}>Inga resultat inlagda än.</div>
+                            <div className={styles.comingSoonBox}>Ingen information inlagd än.</div>
                         )}
                     </div>
                 </div>
