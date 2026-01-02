@@ -70,10 +70,10 @@ export default async function AboutPage() {
                         </div>
                         <div className={styles.textCol}>
                             <h2 className={styles.sectionTitle}>Vår Filosofi</h2>
-                            <p className="p">
-                                Vi tror på att låta hästar vara hästar. Våra unghästar växer upp i stora kuperade hagar
+                            <p className="p" style={{ whiteSpace: 'pre-wrap' }}>
+                                {content?.philosophy_text || `Vi tror på att låta hästar vara hästar. Våra unghästar växer upp i stora kuperade hagar
                                 där de får röra sig fritt och bygga naturlig styrka. Vi lägger stor vikt vid hantering
-                                från första dagen, vilket ger trygga och sociala individer.
+                                från första dagen, vilket ger trygga och sociala individer.`}
                             </p>
                         </div>
                     </section>

@@ -13,6 +13,7 @@ import styles from './page.module.css';
 type AboutPageContent = {
     history_text: string;
     history_image: string;
+    philosophy_text: string;
     philosophy_image: string;
 };
 
@@ -33,6 +34,7 @@ export default function ContentAdminPage() {
     const [aboutContent, setAboutContent] = useState<AboutPageContent>({
         history_text: '',
         history_image: '',
+        philosophy_text: '',
         philosophy_image: ''
     });
 
@@ -211,6 +213,15 @@ export default function ContentAdminPage() {
 
                         <div className={styles.section}>
                             <h2 className={styles.sectionTitle}>Vår Filosofi</h2>
+                            <div className={styles.field}>
+                                <label>Text</label>
+                                <textarea
+                                    className={styles.textarea}
+                                    value={aboutContent.philosophy_text || ''}
+                                    onChange={e => setAboutContent({ ...aboutContent, philosophy_text: e.target.value })}
+                                    placeholder="Skriv filosofin här..."
+                                />
+                            </div>
                             <div className={styles.field}>
                                 <label>Bild (vid filosofin)</label>
                                 <ImageUploadField
