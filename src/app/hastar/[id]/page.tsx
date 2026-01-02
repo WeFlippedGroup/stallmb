@@ -206,7 +206,7 @@ export default async function HorseDetailPage({ params }: { params: Promise<{ id
 
                     <div className={styles.section}>
                         <div className={styles.sectionHeader}>
-                            <Trophy size={24} />
+                            <Info size={24} />
                             <h2>Övrig information</h2>
                         </div>
                         {horse.results ? (
