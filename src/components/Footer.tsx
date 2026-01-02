@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Facebook, Instagram, Mail, MapPin } from 'lucide-react';
+import { Facebook, Instagram, Mail, MapPin, Phone } from 'lucide-react';
 import styles from './Footer.module.css';
 
 export default function Footer() {
@@ -37,6 +37,10 @@ export default function Footer() {
                             <Mail size={18} className="text-accent" />
                             <span>info@stallmb.com</span>
                         </a>
+                        <div className={styles.contactItem}>
+                            <Phone size={18} className="text-accent" />
+                            <span>Marina Bengtsson<br />073-0867068</span>
+                        </div>
                         <div className={styles.contactItem}>
                             <MapPin size={18} className="text-accent" />
                             <span>Stall MB<br />Rud Brånäng 9,<br />54 590 Töreboda</span>

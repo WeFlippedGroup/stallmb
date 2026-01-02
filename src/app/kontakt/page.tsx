@@ -38,6 +38,18 @@ export default async function ContactPage() {
                         <a href="mailto:info@stallmb.com" className={styles.link}>info@stallmb.com</a>
                     </div>
 
+                    <div className={styles.infoCard}>
+                        <div className={styles.iconCircle}>
+                            <Phone size={32} />
+                        </div>
+                        <h3 className="h3">Telefon</h3>
+                        <p className={styles.cardText}>Ring oss gärna om du har frågor.</p>
+                        <div className={styles.link}>
+                            Marina Bengtsson<br />
+                            <a href="tel:0730867068" style={{ textDecoration: 'underline' }}>073-0867068</a>
+                        </div>
+                    </div>
+
 
                     <div className={styles.infoCard}>
                         <div className={styles.iconCircle}>
