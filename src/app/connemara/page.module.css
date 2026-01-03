@@ -21,18 +21,26 @@
 }
 
 .contentWrapper {
-    padding: 6rem 0;
+    padding: 6rem 1rem;
+    /* Added horizontal padding for mobile safety */
     display: flex;
     flex-direction: column;
     gap: 8rem;
+    width: 100%;
+    overflow-x: hidden;
+    /* Prevent horizontal scroll */
 }
 
 .section,
 .sectionReverse {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: 100%;
+    /* Ensure full width on mobile */
     gap: 3rem;
     align-items: center;
+    direction: ltr;
+    /* Force LTR on mobile */
+    width: 100%;
 }
 
 @media (min-width: 768px) {
@@ -52,7 +60,8 @@
 }
 
 .textCol {
-    padding: 1rem;
+    padding: 0;
+    /* Remove padding to rely on container padding or grid gap */
 }
 
 .sectionTitle {

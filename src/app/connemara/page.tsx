@@ -35,7 +35,7 @@ export default async function ConnemaraPage() {
                                 på 1500-talet blandades med de lokala vilda ponnyerna, vilket bidrog till rasens ädla drag.
                             </p>
                         </div>
-                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                        <div className={styles.imageCol}>
                             {content?.origin_image ? (
                                 <Image src={content.origin_image} alt="Connemaras historia" fill style={{ objectFit: 'cover' }} />
                             ) : (
@@ -55,7 +55,7 @@ export default async function ConnemaraPage() {
                                 De rör sig med en fri och vägvinnande steglängd som gör dem till utmärkta ridhästar för både barn och vuxna.
                             </p>
                         </div>
-                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                        <div className={styles.imageCol}>
                             {content?.character_image ? (
                                 <Image src={content.character_image} alt="Connemara karaktär" fill style={{ objectFit: 'cover' }} />
                             ) : (
@@ -75,7 +75,7 @@ export default async function ConnemaraPage() {
                                 för den satsande tävlingsryttaren som vill ha en bästa vän att klättra i klasserna med.
                             </p>
                         </div>
-                        <div className={styles.imageCol} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none', background: 'none' }}>
+                        <div className={styles.imageCol}>
                             {content?.usage_image ? (
                                 <Image src={content.usage_image} alt="Användningsområden" fill style={{ objectFit: 'cover' }} />
                             ) : (

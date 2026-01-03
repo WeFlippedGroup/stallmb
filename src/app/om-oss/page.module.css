@@ -27,7 +27,8 @@
     gap: 8rem;
 }
 
-.section {
+.section,
+.sectionReverse {
     display: grid;
     grid-template-columns: 1fr;
     gap: 3rem;
@@ -37,6 +38,16 @@
 @media (min-width: 768px) {
     .section {
         grid-template-columns: 1fr 1fr;
+    }
+
+    .sectionReverse {
+        grid-template-columns: 1fr 1fr;
+        direction: rtl;
+        /* Visual trick to swap columns, reset text dir in children */
+    }
+
+    .sectionReverse>* {
+        direction: ltr;
     }
 }
 

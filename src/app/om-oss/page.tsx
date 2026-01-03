@@ -53,7 +53,15 @@ export default async function AboutPage() {
                         </div>
                     </section>
 
-                    <section className={styles.section}>
+                    <section className={styles.sectionReverse}>
+                        <div className={styles.textCol}>
+                            <h2 className={styles.sectionTitle}>Vår Filosofi</h2>
+                            <p className="p" style={{ whiteSpace: 'pre-wrap' }}>
+                                {content?.philosophy_text || `Vi tror på att låta hästar vara hästar. Våra unghästar växer upp i stora kuperade hagar
+                                där de får röra sig fritt och bygga naturlig styrka. Vi lägger stor vikt vid hantering
+                                från första dagen, vilket ger trygga och sociala individer.`}
+                            </p>
+                        </div>
                         <div className={styles.imagePlaceholder} style={{ position: 'relative', overflow: 'hidden', padding: 0, border: 'none' }}>
                             {content?.philosophy_image ? (
                                 <Image
@@ -67,14 +75,6 @@ export default async function AboutPage() {
                                     Häst i hagen
                                 </div>
                             )}
-                        </div>
-                        <div className={styles.textCol}>
-                            <h2 className={styles.sectionTitle}>Vår Filosofi</h2>
-                            <p className="p" style={{ whiteSpace: 'pre-wrap' }}>
-                                {content?.philosophy_text || `Vi tror på att låta hästar vara hästar. Våra unghästar växer upp i stora kuperade hagar
-                                där de får röra sig fritt och bygga naturlig styrka. Vi lägger stor vikt vid hantering
-                                från första dagen, vilket ger trygga och sociala individer.`}
-                            </p>
                         </div>
                     </section>
 
