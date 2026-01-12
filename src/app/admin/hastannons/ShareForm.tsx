@@ -29,7 +29,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         county: '',
         municipality: '',
         description: horse.description || '',
-        external_link: `https://stallmb.com/hastar/${horse.id}`,
+        external_link: '',
         // Social media defaults
         website: 'https://stallmb.com',
         facebook: 'https://www.facebook.com/profile.php?id=100068351711268',
@@ -265,7 +265,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                         </div>
 
                         <div className={styles.field}>
-                            <label>Instagram Musik</label>
+                            <label>Önskelåt vid delning av Hästannons</label>
                             <input
                                 type="text"
                                 value={formData.instagram_music}
@@ -275,7 +275,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                         </div>
 
                         <div className={styles.field} style={{ gridColumn: 'span 2' }}>
-                            <label>Extern Länk (T.ex. Blup)</label>
+                            <label>Extern Länk (T.ex. Blåbasen)</label>
                             <input
                                 type="text"
                                 value={formData.external_link}
