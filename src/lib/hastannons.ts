@@ -15,6 +15,7 @@ interface ExternalAd {
     images?: string[];
     external_link?: string;
     horse_name?: string;
+    user_email?: string;
 }
 
 interface ApiResponse {
@@ -45,7 +46,10 @@ export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse>
                 'Content-Type': 'application/json',
                 'X-Api-Key': apiKey,
             },
-            body: JSON.stringify(adData),
+            body: JSON.stringify({
+                ...adData,
+                user_email: 'marinabengtsson@outlook.com'
+            }),
         });
 
         const result = await response.json();
