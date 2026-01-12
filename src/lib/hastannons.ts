@@ -35,6 +35,10 @@ export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse>
         return { success: false, error: 'Server configuration error: Missing API Key' };
     }
 
+    console.log('Posting to Hastannons...');
+    console.log('API Key exists:', !!apiKey);
+    console.log('API Key start:', apiKey ? apiKey.substring(0, 5) + '...' : 'NONE');
+
     try {
         const response = await fetch('https://hastannons.se/api/external/ads', {
             method: 'POST',
