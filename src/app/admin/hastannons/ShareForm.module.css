@@ -70,6 +70,7 @@
     display: flex;
     flex-direction: column;
     gap: 8px;
+    margin-bottom: 16px;
 }
 
 .field label {
@@ -105,6 +106,76 @@
     gap: 10px;
     margin-bottom: 20px;
     border: 1px solid #ffcccc;
+}
+
+.imageGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    margin-top: 8px;
+}
+
+.imageOption {
+    position: relative;
+    aspect-ratio: 1;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    border: 2px solid transparent;
+    transition: all 0.2s;
+}
+
+.imageOption img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.imageOption::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+
+.imageOption:hover::after {
+    opacity: 1;
+}
+
+.imageOption.selected {
+    border-color: #0070f3;
+    box-shadow: 0 0 0 2px rgba(0, 112, 243, 0.2);
+}
+
+.checkmark {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    background: #0070f3;
+    color: white;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.2s;
+    z-index: 2;
+}
+
+.imageOption.selected .checkmark {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.helpText {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 4px;
 }
 
 .actions {
