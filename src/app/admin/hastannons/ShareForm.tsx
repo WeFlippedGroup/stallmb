@@ -231,29 +231,51 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                         </div>
                     </div>
 
-                                                        ? currentImages.filter(i => i !== imgUrl)
-                                                        : [...currentImages, imgUrl];
-                                                    setFormData({ ...formData, images: newImages });
-                                                }}
-                                            >
-                                                <img src={imgUrl} alt={`Bild ${index + 1}`} />
-                                                <div className={styles.checkmark}>
-                                                    <Check size={16} />
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    <p className={styles.helpText}>{formData.images?.length || 0} bilder valda</p>
-                                </div >
+                    <div className={styles.field}>
+                        <label>Beskrivning</label>
+                        <textarea
+                            value={formData.description}
+                            onChange={e => setFormData({ ...formData, description: e.target.value })}
+                            rows={6}
+                        />
+                    </div>
 
-        <div className={styles.actions}>
-            <button type="button" onClick={onClose} className={styles.cancelBtn}>Avbryt</button>
-            <button type="submit" disabled={loading} className={styles.submitBtn}>
-                {loading ? 'Publicerar...' : 'Publicera Annons'}
-            </button>
+                    <div className={styles.field}>
+                        <label>Bilder (Välj vilka som ska skickas med)</label>
+                        <div className={styles.imageGrid}>
+                            {[
+                                ...(horse.image_url ? [horse.image_url] : []),
+                                ...(horse.images || [])
+                            ].filter((v, i, a) => a.indexOf(v) === i && v).map((imgUrl, index) => (
+                                <div
+                                    key={index}
+                                    className={`${styles.imageOption} ${formData.images?.includes(imgUrl) ? styles.selected : ''}`}
+                                    onClick={() => {
+                                        const currentImages = formData.images || [];
+                                        const newImages = currentImages.includes(imgUrl)
+                                            ? currentImages.filter(i => i !== imgUrl)
+                                            : [...currentImages, imgUrl];
+                                        setFormData({ ...formData, images: newImages });
+                                    }}
+                                >
+                                    <img src={imgUrl} alt={`Bild ${index + 1}`} />
+                                    <div className={styles.checkmark}>
+                                        <Check size={16} />
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                        <p className={styles.helpText}>{formData.images?.length || 0} bilder valda</p>
+                    </div>
+
+                    <div className={styles.actions}>
+                        <button type="button" onClick={onClose} className={styles.cancelBtn}>Avbryt</button>
+                        <button type="submit" disabled={loading} className={styles.submitBtn}>
+                            {loading ? 'Publicerar...' : 'Publicera Annons'}
+                        </button>
+                    </div>
+                </form>
+            </div>
         </div>
-                            </form >
-                        </div >
-        </div >
-                );
+    );
 }
