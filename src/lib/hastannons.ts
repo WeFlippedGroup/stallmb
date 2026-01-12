@@ -52,7 +52,7 @@ export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse>
             },
             body: JSON.stringify({
                 ...adData,
-                user_email: 'marinabengtsson@outlook.com'
+                user_email: 'info@stallmb.com'
             }),
         });
 
