@@ -45,13 +45,17 @@ export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse>
     console.log('API Key exists:', !!apiKey);
     console.log('API Key start:', apiKey ? apiKey.substring(0, 5) + '...' : 'NONE');
 
+    // Explicitly construct headers object for debugging and clarity
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey}`,
+    };
+    console.log('Full Authorization Header:', headers.Authorization);
+
     try {
         const response = await fetch('https://hastannons.se/api/external/ads', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${apiKey}`,
-            },
+            headers: headers,
             body: JSON.stringify(adData),
         });
 
