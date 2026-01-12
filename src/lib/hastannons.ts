@@ -16,6 +16,10 @@ interface ExternalAd {
     external_link?: string;
     horse_name?: string;
     user_email?: string;
+    website?: string;
+    facebook?: string;
+    instagram?: string;
+    instagram_music?: string;
 }
 
 interface ApiResponse {

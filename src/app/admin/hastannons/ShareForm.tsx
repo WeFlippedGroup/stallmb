@@ -30,6 +30,12 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         municipality: '',
         description: horse.description || '',
         external_link: `https://stallmb.com/hastar/${horse.id}`,
+        // Social media defaults
+        website: 'https://stallmb.com',
+        facebook: 'https://www.facebook.com/profile.php?id=100068351711268',
+        instagram: '@stall_mb',
+        instagram_music: '',
+
         // Combine main image and gallery images, remove duplicates/empty
         images: [
             ...(horse.image_url ? [horse.image_url] : []),
@@ -227,6 +233,53 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                                 value={formData.municipality}
                                 onChange={e => setFormData({ ...formData, municipality: e.target.value })}
                                 placeholder="T.ex. Falkor"
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Hemsida</label>
+                            <input
+                                type="text"
+                                value={formData.website}
+                                onChange={e => setFormData({ ...formData, website: e.target.value })}
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Facebook (Länk)</label>
+                            <input
+                                type="text"
+                                value={formData.facebook}
+                                onChange={e => setFormData({ ...formData, facebook: e.target.value })}
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Instagram (Handle)</label>
+                            <input
+                                type="text"
+                                value={formData.instagram}
+                                onChange={e => setFormData({ ...formData, instagram: e.target.value })}
+                                placeholder="@dittkonto"
+                            />
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Instagram Musik</label>
+                            <input
+                                type="text"
+                                value={formData.instagram_music}
+                                onChange={e => setFormData({ ...formData, instagram_music: e.target.value })}
+                                placeholder="T.ex. Queen - We Are The Champions"
+                            />
+                        </div>
+
+                        <div className={styles.field} style={{ gridColumn: 'span 2' }}>
+                            <label>Extern Länk (T.ex. Blup)</label>
+                            <input
+                                type="text"
+                                value={formData.external_link}
+                                onChange={e => setFormData({ ...formData, external_link: e.target.value })}
                             />
                         </div>
                     </div>
