@@ -5,6 +5,11 @@
     margin-bottom: 2rem;
 }
 
+.headerActions {
+    display: flex;
+    gap: 12px;
+}
+
 .secondaryButton {
     display: flex;
     align-items: center;

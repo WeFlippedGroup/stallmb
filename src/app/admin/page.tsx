@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { supabase } from '@/lib/supabase';
 import { Horse } from '@/components/HorseCard';
-import { Plus, Trash2, Edit2 } from 'lucide-react';
+import { Plus, Trash2, Edit2, Share2 } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 import styles from './page.module.css';
@@ -42,14 +42,20 @@ export default function AdminDashboard() {
         <div>
             <div className={styles.header}>
                 <h1 className={styles.title}>Mina Hästar</h1>
-                <Link href="/admin/content" className={styles.secondaryButton}>
-                    <Edit2 size={20} />
-                    Redigera sidor
-                </Link>
-                <Link href="/admin/new" className={styles.addButton}>
-                    <Plus size={20} />
-                    Lägg till ny häst
-                </Link>
+                <div className={styles.headerActions}>
+                    <Link href="/admin/hastannons" className={styles.secondaryButton}>
+                        <Share2 size={20} />
+                        Dela till Hastannons
+                    </Link>
+                    <Link href="/admin/content" className={styles.secondaryButton}>
+                        <Edit2 size={20} />
+                        Redigera sidor
+                    </Link>
+                    <Link href="/admin/new" className={styles.addButton}>
+                        <Plus size={20} />
+                        Lägg till ny häst
+                    </Link>
+                </div>
             </div>
 
             {loading ? (
