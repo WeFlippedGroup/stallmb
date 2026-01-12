@@ -21,6 +21,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         title: horse.name,
         price: 0,
         category: 'Hästar',
+        subcategory: '',
         breed: horse.breed || '',
         gender: '', // StallMB doesn't seem to store gender strictly as "Sto"/"Hingst"/"Valack" in a reusable way, user must select
         birth_year: horse.age ? (new Date().getFullYear() - parseInt(horse.age)) : new Date().getFullYear(),
@@ -32,6 +33,20 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         // By default use the main image if available
         images: horse.image_url ? [horse.image_url] : [],
     });
+
+    const horseSubcategories = [
+        "Allroundhäst", "Avelshäst", "Distanshäst", "Dressyrhäst", "Fälttävlanshäst",
+        "Galopphäst", "Halvblod", "Hobbyhäst", "Hopphäst", "Kallblod",
+        "Körning/brukshäst", "Ponny", "Ridhäst", "Sällskapshäst", "Terapihäst",
+        "Travhäst", "Tävlingshäst", "Varmblod", "Westernhäst", "Övriga hästar"
+    ];
+
+    const breedingSubcategories = [
+        "Hingst för avel", "Sto till avel"
+    ];
+
+    const currentSubcategories = formData.category === 'Hästar' ? horseSubcategories :
+        formData.category === 'Avelsmarknad' ? breedingSubcategories : [];
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -102,11 +117,31 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                             <label>Kategori *</label>
                             <select
                                 value={formData.category}
-                                onChange={e => setFormData({ ...formData, category: e.target.value })}
+                                onChange={e => {
+                                    setFormData({
+                                        ...formData,
+                                        category: e.target.value,
+                                        subcategory: '' // Reset subcategory on category change
+                                    });
+                                }}
                                 required
                             >
                                 <option value="Hästar">Hästar</option>
                                 <option value="Avelsmarknad">Avelsmarknad</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Underkategori *</label>
+                            <select
+                                value={formData.subcategory}
+                                onChange={e => setFormData({ ...formData, subcategory: e.target.value })}
+                                required
+                            >
+                                <option value="">Välj underkategori...</option>
+                                {currentSubcategories.map(cat => (
+                                    <option key={cat} value={cat}>{cat}</option>
+                                ))}
                             </select>
                         </div>
 
