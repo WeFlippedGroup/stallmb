@@ -28,11 +28,17 @@ interface ApiResponse {
 }
 
 export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse> {
-    const apiKey = process.env.HASTANNONS_API_KEY;
+    let apiKey = process.env.HASTANNONS_API_KEY;
 
     if (!apiKey) {
         console.error('HASTANNONS_API_KEY is missing');
         return { success: false, error: 'Server configuration error: Missing API Key' };
+    }
+
+    // Sanitize key: remove whitespace and 'Bearer ' prefix if user included it
+    apiKey = apiKey.trim();
+    if (apiKey.toLowerCase().startsWith('bearer ')) {
+        apiKey = apiKey.substring(7).trim();
     }
 
     console.log('Posting to Hastannons...');
