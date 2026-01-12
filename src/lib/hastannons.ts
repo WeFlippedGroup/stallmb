@@ -35,27 +35,16 @@ export async function postToHastannons(adData: ExternalAd): Promise<ApiResponse>
         return { success: false, error: 'Server configuration error: Missing API Key' };
     }
 
-    // Sanitize key: remove whitespace and 'Bearer ' prefix if user included it
+    // Sanitize key: remove whitespace
     apiKey = apiKey.trim();
-    if (apiKey.toLowerCase().startsWith('bearer ')) {
-        apiKey = apiKey.substring(7).trim();
-    }
-
-    console.log('Posting to Hastannons...');
-    console.log('API Key exists:', !!apiKey);
-    console.log('API Key start:', apiKey ? apiKey.substring(0, 5) + '...' : 'NONE');
-
-    // Explicitly construct headers object for debugging and clarity
-    const headers = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-    };
-    console.log('Full Authorization Header:', headers.Authorization);
 
     try {
         const response = await fetch('https://hastannons.se/api/external/ads', {
             method: 'POST',
-            headers: headers,
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Api-Key': apiKey,
+            },
             body: JSON.stringify(adData),
         });
 
