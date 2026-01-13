@@ -2,6 +2,8 @@ import type { Metadata } from 'next';
 import './globals.css';
 import JsonLd from '@/components/JsonLd';
 
+import { Analytics } from "@vercel/analytics/react";
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://stallmb.com'),
   title: {
@@ -63,6 +65,7 @@ export default function RootLayout({
       <body>
         <JsonLd />
         {children}
+        <Analytics />
       </body>
     </html>
   );
