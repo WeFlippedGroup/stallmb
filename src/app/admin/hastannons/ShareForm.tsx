@@ -17,7 +17,25 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
     const [error, setError] = useState<string | null>(null);
 
     // Default values mapped from horse data where possible
-    const [formData, setFormData] = useState({
+    const [formData, setFormData] = useState<{
+        title: string;
+        price: number | string;
+        category: string;
+        subcategory: string;
+        breed: string;
+        gender: string;
+        birth_year: number | string;
+        height: number | string;
+        county: string;
+        municipality: string;
+        description: string;
+        external_link: string;
+        website: string;
+        facebook: string;
+        instagram: string;
+        instagram_music: string;
+        images: string[];
+    }>({
         title: horse.name,
         price: 0,
         category: 'Hästar',
@@ -112,13 +130,29 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                         </div>
 
                         <div className={styles.field}>
-                            <label>Pris (SEK) * (Ange 0 för ej angivet)</label>
+                            <label>Pris (SEK) *</label>
+                            <div style={{ margin: '5px 0 10px 0', display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                <input
+                                    type="checkbox"
+                                    id="no-price-check"
+                                    checked={formData.price === 0 || formData.price === ''}
+                                    onChange={(e) => {
+                                        if (e.target.checked) setFormData({ ...formData, price: 0 });
+                                    }}
+                                    style={{ width: 'auto' }}
+                                />
+                                <label htmlFor="no-price-check" style={{ fontWeight: 'normal', margin: 0, cursor: 'pointer' }}>Ange ej pris</label>
+                            </div>
                             <input
                                 type="number"
                                 value={formData.price}
-                                onChange={e => setFormData({ ...formData, price: Number(e.target.value) })}
-                                required
+                                onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData({ ...formData, price: val === '' ? '' : Number(val) });
+                                }}
+                                required={formData.price !== 0 && formData.price !== ''}
                                 min="0"
+                                placeholder="0"
                             />
                         </div>
 
@@ -182,7 +216,10 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                             <input
                                 type="number"
                                 value={formData.birth_year}
-                                onChange={e => setFormData({ ...formData, birth_year: Number(e.target.value) })}
+                                onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData({ ...formData, birth_year: val === '' ? '' : Number(val) });
+                                }}
                             />
                         </div>
 
@@ -191,7 +228,10 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                             <input
                                 type="number"
                                 value={formData.height}
-                                onChange={e => setFormData({ ...formData, height: Number(e.target.value) })}
+                                onChange={e => {
+                                    const val = e.target.value;
+                                    setFormData({ ...formData, height: val === '' ? '' : Number(val) });
+                                }}
                             />
                         </div>
 
