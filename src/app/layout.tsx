@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import './globals.css';
 import JsonLd from '@/components/JsonLd';
 
+import VisitorTracker from '@/components/VisitorTracker';
 import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
@@ -64,6 +65,7 @@ export default function RootLayout({
     <html lang="sv">
       <body>
         <JsonLd />
+        <VisitorTracker />
         {children}
         <Analytics />
       </body>

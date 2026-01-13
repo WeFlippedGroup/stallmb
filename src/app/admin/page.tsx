@@ -11,6 +11,7 @@ import styles from './page.module.css';
 export default function AdminDashboard() {
     const [horses, setHorses] = useState<Horse[]>([]);
     const [loading, setLoading] = useState(true);
+    const [stats, setStats] = useState<{ total: number; today: number } | null>(null);
 
     const fetchHorses = async () => {
         setLoading(true);
@@ -25,6 +26,11 @@ export default function AdminDashboard() {
 
     useEffect(() => {
         fetchHorses();
+        // Import dynamically to avoid server component issues if any, 
+        // but since it's a server action we can call it directly in useEffect.
+        import('@/actions/analytics').then(({ getVisitorStats }) => {
+            getVisitorStats().then(setStats);
+        });
     }, []);
 
     const handleDelete = async (id: string) => {
@@ -57,6 +63,40 @@ export default function AdminDashboard() {
                     </Link>
                 </div>
             </div>
+
+            {stats && (
+                <div style={{
+                    display: 'grid',
+                    gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+                    gap: '20px',
+                    marginBottom: '40px'
+                }}>
+                    <div style={{
+                        background: 'white',
+                        padding: '20px',
+                        borderRadius: '12px',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                        border: '1px solid #e5e7eb'
+                    }}>
+                        <h3 style={{ fontSize: '14px', color: '#6b7280', marginBottom: '8px' }}>Totalt antal besökare</h3>
+                        <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', margin: 0 }}>
+                            {stats.total.toLocaleString()}
+                        </p>
+                    </div>
+                    <div style={{
+                        background: 'white',
+                        padding: '20px',
+                        borderRadius: '12px',
+                        boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
+                        border: '1px solid #e5e7eb'
+                    }}>
+                        <h3 style={{ fontSize: '14px', color: '#6b7280', marginBottom: '8px' }}>Besökare idag</h3>
+                        <p style={{ fontSize: '32px', fontWeight: 'bold', color: '#111827', margin: 0 }}>
+                            {stats.today.toLocaleString()}
+                        </p>
+                    </div>
+                </div>
+            )}
 
             {loading ? (
                 <div className={styles.loading}>Laddar hästar...</div>
