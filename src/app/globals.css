@@ -57,6 +57,12 @@ img {
   padding: 0 var(--spacing-padding);
 }
 
+@media (max-width: 768px) {
+  .container {
+    padding: 0 1rem;
+  }
+}
+
 .text-primary {
   color: var(--color-primary);
 }

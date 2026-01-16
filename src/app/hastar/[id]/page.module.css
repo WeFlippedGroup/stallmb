@@ -211,11 +211,9 @@
     display: flex;
     flex-direction: row;
     border: 1px solid #eee;
-    border-radius: 8px;
-    overflow: hidden;
-    font-size: 0.9rem;
     background: #fff;
     width: 100%;
+    max-width: 100%;
     /* Ensure scroll on small screens */
     overflow-x: auto;
 }
@@ -300,14 +298,23 @@
     }
 
     .section {
-        padding: 1.25rem;
+        padding: 1rem;
     }
 
     .contactCard {
-        padding: 1.5rem;
+        padding: 1.25rem;
     }
 
     .name {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        word-break: break-word;
+        /* Ensure long names break */
+    }
+
+    /* Ensure text breaks on mobile to prevent overflow */
+    .description,
+    .section {
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }
