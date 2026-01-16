@@ -18,8 +18,8 @@
 .imageWrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    /* Standard beautiful aspect ratio */
+    aspect-ratio: 3 / 4;
+    /* Portrait format for mobile photos */
     overflow: hidden;
 }
 
