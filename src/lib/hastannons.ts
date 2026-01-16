@@ -20,6 +20,7 @@ interface ExternalAd {
     facebook?: string;
     instagram?: string;
     instagram_music?: string;
+    origin_country?: string;
 }
 
 interface ApiResponse {

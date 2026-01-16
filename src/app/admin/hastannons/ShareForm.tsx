@@ -34,6 +34,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         facebook: string;
         instagram: string;
         instagram_music: string;
+        origin_country: string;
         images: string[];
     }>({
         title: horse.name,
@@ -53,6 +54,7 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
         facebook: 'https://www.facebook.com/profile.php?id=100068351711268',
         instagram: '@stall_mb',
         instagram_music: '',
+        origin_country: 'Sverige', // Default to Sverige
 
         // Combine main image and gallery images, remove duplicates/empty
         images: [
@@ -70,6 +72,13 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
 
     const breedingSubcategories = [
         "Hingst för avel", "Sto till avel"
+    ];
+
+    const countries = [
+        "Sverige", "Island", "Tyskland", "Nederländerna", "Danmark", "Belgien",
+        "Irland", "Norge", "Finland", "Frankrike", "Spanien", "Österrike",
+        "Italien", "Ungern", "Tjeckien", "Litauen", "Estland", "Schweiz",
+        "Portugal", "Polen", "Storbritannien", "USA", "Kanada", "Australien"
     ];
 
     const currentSubcategories = formData.category === 'Hästar' ? horseSubcategories :
@@ -263,6 +272,19 @@ export default function ShareForm({ horse, onClose, onSuccess }: ShareFormProps)
                                 <option value="Västra Götalands län">Västra Götalands län</option>
                                 <option value="Örebro län">Örebro län</option>
                                 <option value="Östergötlands län">Östergötlands län</option>
+                            </select>
+                        </div>
+
+                        <div className={styles.field}>
+                            <label>Land (Ursprung)</label>
+                            <select
+                                value={formData.origin_country}
+                                onChange={e => setFormData({ ...formData, origin_country: e.target.value })}
+                            >
+                                <option value="">Välj land...</option>
+                                {countries.map(country => (
+                                    <option key={country} value={country}>{country}</option>
+                                ))}
                             </select>
                         </div>
 
