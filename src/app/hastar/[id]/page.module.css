@@ -215,7 +215,7 @@
     overflow: hidden;
     font-size: 0.9rem;
     background: #fff;
-    min-width: 600px;
+    width: 100%;
     /* Ensure scroll on small screens */
     overflow-x: auto;
 }
@@ -224,6 +224,7 @@
     flex: 1.5;
     display: flex;
     flex-direction: column;
+    min-width: 220px;
 }
 
 .pedigreeGen2 {
@@ -231,6 +232,7 @@
     display: flex;
     flex-direction: column;
     border-left: 1px solid #eee;
+    min-width: 180px;
 }
 
 .pedigreeGen3 {
@@ -239,6 +241,7 @@
     flex-direction: column;
     border-left: 1px solid #eee;
     font-size: 0.8rem;
+    min-width: 140px;
 }
 
 .pedigreeNode {
@@ -289,4 +292,22 @@
 .nodeValue {
     font-weight: 600;
     color: var(--color-primary);
+}
+
+@media (max-width: 768px) {
+    .contentGrid {
+        gap: 2rem;
+    }
+
+    .section {
+        padding: 1.25rem;
+    }
+
+    .contactCard {
+        padding: 1.5rem;
+    }
+
+    .name {
+        font-size: 2.5rem;
+    }
 }
