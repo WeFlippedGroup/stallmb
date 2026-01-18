@@ -28,20 +28,11 @@ export const metadata: Metadata = {
     siteName: 'StallMB',
     locale: 'sv_SE',
     type: 'website',
-    images: [
-      {
-        url: '/assets/logo-round.png', // Fallback image
-        width: 800,
-        height: 600,
-        alt: 'StallMB Logo',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'StallMB - Connemara Uppfödning',
     description: 'Uppfödning av Connemarahästar med fokus på prestation och temperament.',
-    images: ['/assets/logo-round.png'], // Fallback image
   },
   robots: {
     index: true,
