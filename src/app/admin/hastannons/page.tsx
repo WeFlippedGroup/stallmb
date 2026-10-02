@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { listHorses } from '@/actions/horses';
 import { Horse } from '@/components/HorseCard';
 import ShareForm from './ShareForm';
 import { Share2, ExternalLink } from 'lucide-react';
@@ -21,17 +21,9 @@ export default function HastannonsPage() {
         // But for simplicity let's show all and let user filter/choose? 
         // Or filter by category 'sale', 'stallion' etc.
         // Let's fetch all for now to be safe as data might be messy.
-        const { data, error } = await supabase
-            .from('horses')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (data) {
-            // Filter locally to relevant categories if needed, or just show all.
-            // Let's show all but maybe sort relevant ones to top?
-            // For now, just all.
-            setHorses(data as Horse[]);
-        }
+        const { horses: rows, error } = await listHorses();
+        if (error) console.error(error);
+        setHorses(rows);
         setLoading(false);
     };
 

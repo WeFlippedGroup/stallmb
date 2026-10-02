@@ -1,46 +1,35 @@
 'use server';
 
-import { supabase } from '@/lib/supabase';
+import { getSession } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export async function logVisit(path: string, userAgent?: string) {
     try {
-        const { error } = await supabase.from('visitor_stats').insert({
-            path,
-            user_agent: userAgent
+        await prisma.visitorStat.create({
+            data: {
+                path,
+                userAgent: userAgent?.slice(0, 500),
+            },
         });
-
-        if (error) {
-            console.error('Error logging visit:', error);
-        }
     } catch (err) {
         console.error('Unexpected error logging visit:', err);
     }
 }
 
 export async function getVisitorStats() {
+    const session = await getSession();
+    if (!session) return { total: 0, today: 0 };
+
     try {
-        // Get total count
-        const { count: totalCount, error: totalError } = await supabase
-            .from('visitor_stats')
-            .select('*', { count: 'exact', head: true });
-
-        if (totalError) throw totalError;
-
-        // Get today's count
         const today = new Date();
         today.setHours(0, 0, 0, 0);
 
-        const { count: todayCount, error: todayError } = await supabase
-            .from('visitor_stats')
-            .select('*', { count: 'exact', head: true })
-            .gte('visited_at', today.toISOString());
+        const [total, todayCount] = await Promise.all([
+            prisma.visitorStat.count(),
+            prisma.visitorStat.count({ where: { visitedAt: { gte: today } } }),
+        ]);
 
-        if (todayError) throw todayError;
-
-        return {
-            total: totalCount || 0,
-            today: todayCount || 0
-        };
+        return { total, today: todayCount };
     } catch (error) {
         console.error('Error fetching visitor stats:', error);
         return { total: 0, today: 0 };

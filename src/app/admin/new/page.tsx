@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { createHorse } from '@/actions/horses';
+import { uploadImage } from '@/actions/upload';
 import { useRouter } from 'next/navigation';
 import { ChevronLeft, Upload, X } from 'lucide-react';
 import Link from 'next/link';
@@ -42,21 +43,14 @@ export default function NewHorsePage() {
         try {
             for (let i = 0; i < e.target.files.length; i++) {
                 const file = e.target.files[i];
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-                const filePath = `${fileName}`;
-
-                const { error: uploadError } = await supabase.storage
-                    .from('horse-images')
-                    .upload(filePath, file);
-
-                if (uploadError) throw uploadError;
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('horse-images')
-                    .getPublicUrl(filePath);
-
-                newImageUrls.push(publicUrl);
+                const body = new FormData();
+                body.append('file', file);
+                body.append('kind', 'horses');
+                const uploaded = await uploadImage(body);
+                if (uploaded.error || !uploaded.url) {
+                    throw new Error(uploaded.error || 'Uppladdning misslyckades');
+                }
+                newImageUrls.push(uploaded.url);
             }
 
             setImages(prev => [...prev, ...newImageUrls]);
@@ -102,23 +96,18 @@ export default function NewHorsePage() {
                 }
             });
 
-            // Insert Record
-            const { error: insertError } = await supabase
-                .from('horses')
-                .insert({
-                    name,
-                    breed,
-                    age,
-                    description,
-                    category,
-                    image_url: images[0] || null, // First image is main
-                    images: images, // All images
-                    pedigree: pedigree,
-                    blabasen_link: blabasenLink,
-                    results: results
-                });
-
-            if (insertError) throw insertError;
+            const result = await createHorse({
+                name,
+                breed,
+                age,
+                description,
+                category,
+                images,
+                pedigree,
+                blabasen_link: blabasenLink,
+                results,
+            });
+            if (result.error) throw new Error(result.error);
 
             router.push('/admin');
 

@@ -14,6 +14,7 @@ ENV DATABASE_URL="postgresql://stallmb:stallmb@localhost:5432/stallmb?schema=pub
 RUN npx prisma generate
 RUN npm run build
 
+RUN mkdir -p /app/public/uploads
 COPY docker/entrypoint.sh /app/docker/entrypoint.sh
 RUN chmod +x /app/docker/entrypoint.sh
 

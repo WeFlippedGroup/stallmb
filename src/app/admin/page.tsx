@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { deleteHorse, listHorses } from '@/actions/horses';
 import { Horse } from '@/components/HorseCard';
 import { Plus, Trash2, Edit2, Share2 } from 'lucide-react';
 import Image from 'next/image';
@@ -15,12 +15,9 @@ export default function AdminDashboard() {
 
     const fetchHorses = async () => {
         setLoading(true);
-        const { data, error } = await supabase
-            .from('horses')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (data) setHorses(data as Horse[]);
+        const { horses: rows, error } = await listHorses();
+        if (error) console.error(error);
+        setHorses(rows);
         setLoading(false);
     };
 
@@ -36,11 +33,11 @@ export default function AdminDashboard() {
     const handleDelete = async (id: string) => {
         if (!confirm('Är du säker på att du vill ta bort denna häst?')) return;
 
-        const { error } = await supabase.from('horses').delete().eq('id', id);
-        if (!error) {
+        const result = await deleteHorse(id);
+        if (!result.error) {
             setHorses(horses.filter(h => h.id !== id));
         } else {
-            alert('Kunde inte ta bort hästen: ' + error.message);
+            alert('Kunde inte ta bort hästen: ' + result.error);
         }
     };
 

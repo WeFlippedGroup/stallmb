@@ -1,8 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
-import { useRouter } from 'next/navigation';
+import { getAdminSiteContent, saveSiteContent } from '@/actions/content';
+import { uploadImage } from '@/actions/upload';
 import { ChevronLeft, Upload, Trash2 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -24,7 +24,6 @@ type ConnemaraPageContent = {
 };
 
 export default function ContentAdminPage() {
-    const router = useRouter();
     const [activeTab, setActiveTab] = useState<'about' | 'connemara'>('about');
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
@@ -49,26 +48,14 @@ export default function ContentAdminPage() {
         const fetchData = async () => {
             setLoading(true);
 
-            // Fetch About Page Content
-            const { data: aboutData } = await supabase
-                .from('site_content')
-                .select('content')
-                .eq('id', 'about_page')
-                .single();
-
-            if (aboutData?.content) {
-                setAboutContent(prev => ({ ...prev, ...aboutData.content }));
+            const about = await getAdminSiteContent('about_page');
+            if (about.content) {
+                setAboutContent(prev => ({ ...prev, ...about.content }));
             }
 
-            // Fetch Connemara Page Content
-            const { data: connemaraData } = await supabase
-                .from('site_content')
-                .select('content')
-                .eq('id', 'connemara_page')
-                .single();
-
-            if (connemaraData?.content) {
-                setConnemaraContent(prev => ({ ...prev, ...connemaraData.content }));
+            const connemara = await getAdminSiteContent('connemara_page');
+            if (connemara.content) {
+                setConnemaraContent(prev => ({ ...prev, ...connemara.content }));
             }
 
             setLoading(false);
@@ -84,31 +71,14 @@ export default function ContentAdminPage() {
     ) => {
         setMessage(null);
         try {
-            const fileExt = file.name.split('.').pop();
-            const fileName = `cms-${section}-${field}-${Math.random().toString(36).substring(2)}.${fileExt}`;
-            const filePath = `${fileName}`;
-
-            // Upload
-            const { error: uploadError } = await supabase.storage
-                .from('site-assets') // Make sure this bucket exists or use 'horse-images' temporarily
-                .upload(filePath, file);
-
-            if (uploadError) {
-                // Determine if error is "Bucket not found". For now, fallback to 'horse-images' if needed
-                // But let's assume valid bucket or throw.
-                // Creating a new bucket via SQL is hard, so we might reuse 'horse-images' if 'site-assets' fails?
-                // Actually, let's just use 'horse-images' for simplicity as it is public.
-                const { error: retryError } = await supabase.storage
-                    .from('horse-images')
-                    .upload(filePath, file);
-
-                if (retryError) throw retryError;
+            const body = new FormData();
+            body.append('file', file);
+            body.append('kind', 'assets');
+            const uploaded = await uploadImage(body);
+            if (uploaded.error || !uploaded.url) {
+                throw new Error(uploaded.error || 'Uppladdning misslyckades');
             }
-
-            // Get URL - try site-assets first, then horse-images
-            const { data: { publicUrl } } = supabase.storage
-                .from('horse-images') // Defaulting to known public bucket
-                .getPublicUrl(filePath);
+            const publicUrl = uploaded.url;
 
             // Update State
             if (section === 'about') {
@@ -127,25 +97,10 @@ export default function ContentAdminPage() {
         setMessage(null);
 
         try {
-            if (activeTab === 'about') {
-                const { error } = await supabase
-                    .from('site_content')
-                    .upsert({
-                        id: 'about_page',
-                        content: aboutContent,
-                        updated_at: new Date().toISOString()
-                    });
-                if (error) throw error;
-            } else {
-                const { error } = await supabase
-                    .from('site_content')
-                    .upsert({
-                        id: 'connemara_page',
-                        content: connemaraContent,
-                        updated_at: new Date().toISOString()
-                    });
-                if (error) throw error;
-            }
+            const payload = activeTab === 'about' ? aboutContent : connemaraContent;
+            const id = activeTab === 'about' ? 'about_page' : 'connemara_page';
+            const result = await saveSiteContent(id, payload);
+            if (result.error) throw new Error(result.error);
 
             setMessage({ type: 'success', text: 'Ändringar sparade!' });
         } catch (err: any) {

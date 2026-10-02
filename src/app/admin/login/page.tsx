@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { supabase } from '@/lib/supabase';
+import { login } from '@/actions/auth';
 import { useRouter } from 'next/navigation';
 import styles from './page.module.css';
 
@@ -17,16 +17,14 @@ export default function LoginPage() {
         setLoading(true);
         setError(null);
 
-        const { error } = await supabase.auth.signInWithPassword({
-            email,
-            password,
-        });
+        const result = await login(email, password);
 
-        if (error) {
-            setError(error.message);
+        if (result.error) {
+            setError(result.error);
             setLoading(false);
         } else {
             router.push('/admin');
+            router.refresh();
         }
     };
 

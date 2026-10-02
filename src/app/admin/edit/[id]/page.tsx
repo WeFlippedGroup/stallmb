@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabase';
+import { getHorseForAdmin, updateHorse } from '@/actions/horses';
+import { uploadImage } from '@/actions/upload';
 import { useRouter, useParams } from 'next/navigation';
 import { ChevronLeft, Upload, X, Trash2 } from 'lucide-react';
 import Link from 'next/link';
@@ -37,38 +38,30 @@ export default function EditHorsePage() {
         const fetchHorse = async () => {
             if (!id) return;
 
-            const { data, error } = await supabase
-                .from('horses')
-                .select('*')
-                .eq('id', id)
-                .single();
+            const { horse, error } = await getHorseForAdmin(id);
 
-            if (error) {
-                setError('Kunde inte hitta hästen.');
+            if (error || !horse) {
+                setError(error || 'Kunde inte hitta hästen.');
                 setLoading(false);
                 return;
             }
 
-            if (data) {
-                setName(data.name || '');
-                setBreed(data.breed || 'Connemara');
-                setAge(data.age || '');
-                setDescription(data.description || '');
-                setCategory(data.category || 'breeding');
-                setPedigree(data.pedigree || {});
-                setBlabasenLink(data.blabasen_link || '');
-                setResults(data.results || '');
+            setName(horse.name || '');
+            setBreed(horse.breed || 'Connemara');
+            setAge(horse.age || '');
+            setDescription(horse.description || '');
+            setCategory(horse.category || 'breeding');
+            setPedigree(horse.pedigree || {});
+            setBlabasenLink(horse.blabasen_link || '');
+            setResults(horse.results || '');
 
-                // Combine legacy image_url with new images array if present
-                // Priority: images array -> single image_url -> empty
-                let loadedImages: string[] = [];
-                if (data.images && Array.isArray(data.images)) {
-                    loadedImages = data.images;
-                } else if (data.image_url) {
-                    loadedImages = [data.image_url];
-                }
-                setImages(loadedImages);
+            let loadedImages: string[] = [];
+            if (horse.images && Array.isArray(horse.images) && horse.images.length > 0) {
+                loadedImages = horse.images;
+            } else if (horse.image_url) {
+                loadedImages = [horse.image_url];
             }
+            setImages(loadedImages);
             setLoading(false);
         };
 
@@ -91,21 +84,14 @@ export default function EditHorsePage() {
         try {
             for (let i = 0; i < e.target.files.length; i++) {
                 const file = e.target.files[i];
-                const fileExt = file.name.split('.').pop();
-                const fileName = `${Math.random().toString(36).substring(2)}.${fileExt}`;
-                const filePath = `${fileName}`;
-
-                const { error: uploadError } = await supabase.storage
-                    .from('horse-images')
-                    .upload(filePath, file);
-
-                if (uploadError) throw uploadError;
-
-                const { data: { publicUrl } } = supabase.storage
-                    .from('horse-images')
-                    .getPublicUrl(filePath);
-
-                newImageUrls.push(publicUrl);
+                const body = new FormData();
+                body.append('file', file);
+                body.append('kind', 'horses');
+                const uploaded = await uploadImage(body);
+                if (uploaded.error || !uploaded.url) {
+                    throw new Error(uploaded.error || 'Uppladdning misslyckades');
+                }
+                newImageUrls.push(uploaded.url);
             }
 
             setImages(prev => [...prev, ...newImageUrls]);
@@ -155,24 +141,18 @@ export default function EditHorsePage() {
                 }
             });
 
-            // Update Record
-            const { error: updateError } = await supabase
-                .from('horses')
-                .update({
-                    name,
-                    breed,
-                    age,
-                    description,
-                    category,
-                    image_url: images[0] || null, // Main image is always first
-                    images: images, // Save all images
-                    pedigree: newPedigree,
-                    blabasen_link: blabasenLink,
-                    results: results
-                })
-                .eq('id', id);
-
-            if (updateError) throw updateError;
+            const result = await updateHorse(id, {
+                name,
+                breed,
+                age,
+                description,
+                category,
+                images,
+                pedigree: newPedigree,
+                blabasen_link: blabasenLink,
+                results,
+            });
+            if (result.error) throw new Error(result.error);
 
             router.push('/admin');
 

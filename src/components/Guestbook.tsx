@@ -1,7 +1,8 @@
 'use client';
 
 import { useState, useRef } from 'react';
-import { addGuestbookEntry, GuestbookEntry } from '@/lib/data';
+import { addGuestbookEntry } from '@/actions/guestbook';
+import type { GuestbookEntry } from '@/lib/map';
 import { Send, Loader2, MessageSquare, User } from 'lucide-react';
 import styles from './Guestbook.module.css';
 
@@ -15,15 +16,12 @@ function GuestbookForm({ onEntryAdded }: { onEntryAdded: (entry: GuestbookEntry)
         e.preventDefault();
         setIsSubmitting(true);
         try {
-            const { data, error } = await addGuestbookEntry(name, message);
-            if (error) throw error;
+            const result = await addGuestbookEntry(name, message);
+            if (result.error || !result.entry) throw new Error(result.error || 'Kunde inte spara');
 
-            if (data && data.length > 0) {
-                // Convert Supabase response to GuestbookEntry
-                onEntryAdded(data[0] as unknown as GuestbookEntry);
-                setName('');
-                setMessage('');
-            }
+            onEntryAdded(result.entry);
+            setName('');
+            setMessage('');
         } catch (err) {
             console.error('Failed to add entry:', err);
             alert('Kunde inte spara inlägget. Försök igen.');

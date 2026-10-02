@@ -3,7 +3,6 @@ import './globals.css';
 import JsonLd from '@/components/JsonLd';
 
 import VisitorTracker from '@/components/VisitorTracker';
-import { Analytics } from "@vercel/analytics/react";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://stallmb.com'),
@@ -58,7 +57,6 @@ export default function RootLayout({
         <JsonLd />
         <VisitorTracker />
         {children}
-        <Analytics />
       </body>
     </html>
   );

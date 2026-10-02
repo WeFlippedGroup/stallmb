@@ -1,46 +1,29 @@
-import { supabase } from '@/lib/supabase';
+import { prisma } from '@/lib/prisma';
 import { MOCK_HORSES } from '@/lib/mockData';
 import { Horse } from '@/components/HorseCard';
+import { toGuestbook, toHorse, type GuestbookEntry } from '@/lib/map';
+
+export type { GuestbookEntry };
 
 export async function getHorses(): Promise<Horse[]> {
     try {
-        const { data, error } = await supabase
-            .from('horses')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error || !data || data.length === 0) {
-            return MOCK_HORSES;
-        }
-        return data as Horse[];
+        const rows = await prisma.horse.findMany({ orderBy: { createdAt: 'desc' } });
+        if (rows.length === 0) return MOCK_HORSES;
+        return rows.map(toHorse);
     } catch (e) {
+        console.error('Error fetching horses:', e);
         return MOCK_HORSES;
     }
 }
 
 export async function getHorse(id: string): Promise<Horse | undefined> {
     try {
-        // First try to fetch from Supabase
-        const { data, error } = await supabase
-            .from('horses')
-            .select('*')
-            .eq('id', id)
-            .single();
+        const row = await prisma.horse.findUnique({ where: { id } });
+        let horseData = row ? toHorse(row) : MOCK_HORSES.find((h) => h.id === id);
 
-        let horseData = data as Horse | undefined;
-
-        // If not found in DB by ID, check if it's a mock ID
-        if (error || !horseData) {
-            horseData = MOCK_HORSES.find((h) => h.id === id);
-        }
-
-        // Enhancement: If we have a horse (from DB or Mock), try to find extra data (images) 
-        // from local mock data if the DB record is missing it.
-        // We match by name since IDs might differ between DB and Mock.
         if (horseData) {
             const mockMatch = MOCK_HORSES.find(m => m.name === horseData?.name || m.id === horseData?.id);
             if (mockMatch && mockMatch.images && (!horseData.images || horseData.images.length === 0)) {
-                // Merge images from mock to the result
                 horseData = {
                     ...horseData,
                     images: mockMatch.images
@@ -50,53 +33,30 @@ export async function getHorse(id: string): Promise<Horse | undefined> {
 
         return horseData;
     } catch (e) {
-        // Fallback to mock data on exception
+        console.error('Error fetching horse:', e);
         return MOCK_HORSES.find((h) => h.id === id);
     }
 }
 
-export type GuestbookEntry = {
-    id: number;
-    name: string;
-    message: string;
-    created_at: string;
-};
-
 export async function getGuestbookEntries(): Promise<GuestbookEntry[]> {
     try {
-        const { data, error } = await supabase
-            .from('guestbook')
-            .select('*')
-            .order('created_at', { ascending: false });
-
-        if (error || !data) {
-            console.error('Error fetching guestbook:', error);
-            return [];
-        }
-        return data as GuestbookEntry[];
+        const rows = await prisma.guestbookEntry.findMany({ orderBy: { createdAt: 'desc' } });
+        return rows.map(toGuestbook);
     } catch (e) {
+        console.error('Error fetching guestbook:', e);
         return [];
     }
 }
 
-export async function addGuestbookEntry(name: string, message: string) {
-    return await supabase
-        .from('guestbook')
-        .insert([{ name, message }])
-        .select();
-}
-
 export async function getSiteContent(id: string) {
     try {
-        const { data, error } = await supabase
-            .from('site_content')
-            .select('content')
-            .eq('id', id)
-            .single();
-
-        if (error || !data) return null;
-        return data.content;
+        const row = await prisma.siteContent.findUnique({
+            where: { id },
+            select: { content: true },
+        });
+        return (row?.content ?? null) as Record<string, string> | null;
     } catch (e) {
+        console.error('Error fetching site content:', e);
         return null;
     }
 }
