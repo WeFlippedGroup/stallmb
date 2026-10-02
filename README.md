@@ -49,17 +49,21 @@ npm run dev
 
 ### På servern
 
-1. Klona repot och kopiera `.env.example` till `.env`.
-2. Sätt starka lösenord och `NEXT_PUBLIC_SITE_URL` till serverns publika URL (t.ex. `https://stallmb.com`).
-3. Öppna inte Postgres-porten mot internet. Lägg en reverse proxy (Caddy/nginx) framför appen på port 3000.
-4. Starta:
+Deploya `docker-compose.yml`, inte bara `Dockerfile`. Då ska två tjänster synas: `app` och `postgres`.
 
-```bash
-docker compose up -d --build
-```
+`.env` ligger inte i repot. Sätt variablerna i panelen (Coolify eller motsvarande) innan du deployar:
 
-5. Körda migrationer loggas i app-containern vid start (`prisma migrate deploy`).
-6. Importera ev. data från Supabase:
+- `POSTGRES_PASSWORD` (krävs, annars startar inte databasen)
+- `POSTGRES_USER` (standard `stallmb`)
+- `POSTGRES_DB` (standard `stallmb`)
+- `ADMIN_EMAIL` och `ADMIN_PASSWORD`
+- `NEXT_PUBLIC_SITE_URL` (t.ex. `https://stallmb.com`)
+
+Lösenordet får inte innehålla `@`. Öppna inte Postgres-porten mot internet. Lägg en reverse proxy framför appen på port 3000.
+
+På en egen maskin utan panel: kopiera `.env.example` till `.env`, sätt samma variabler, och kör `docker compose up -d --build`.
+
+Migreringarna körs i app-containern vid start. Importera ev. data från Supabase:
 
 ```bash
 # På en maskin med tillgång till Supabase

@@ -6,10 +6,14 @@ services:
     restart: unless-stopped
     ports:
       - "${APP_PORT:-3000}:3000"
-    env_file:
-      - .env
     environment:
       DATABASE_URL: postgresql://${POSTGRES_USER:-stallmb}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-stallmb}?schema=public
+      ADMIN_EMAIL: ${ADMIN_EMAIL:-}
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+      ADMIN_SESSION_SECRET: ${ADMIN_SESSION_SECRET:-}
+      NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL:-http://localhost:3000}
+      HASTANNONS_API_KEY: ${HASTANNONS_API_KEY:-}
+      RESEND_API_KEY: ${RESEND_API_KEY:-}
     volumes:
       - uploads_data:/app/public/uploads
     depends_on:
