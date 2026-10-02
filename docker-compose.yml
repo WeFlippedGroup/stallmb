@@ -1,7 +1,7 @@
 services:
   app:
     build:
-      context: ..
+      context: .
       dockerfile: Dockerfile
     restart: unless-stopped
     ports:
@@ -28,8 +28,10 @@ services:
       POSTGRES_DB: ${POSTGRES_DB:-stallmb}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "${POSTGRES_PORT:-5432}:5432"
+    # No host port. 5432 on the server is already taken, and the app
+    # reaches this database as the hostname "postgres" inside the project network.
+    expose:
+      - "5432"
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-stallmb} -d ${POSTGRES_DB:-stallmb}"]
       interval: 5s

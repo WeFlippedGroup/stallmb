@@ -1,0 +1,6 @@
+# Local only. Do not point Openship at this file.
+# Publishes Postgres on the host so `npm run dev` can use localhost.
+services:
+  postgres:
+    ports:
+      - "127.0.0.1:${POSTGRES_PORT:-5432}:5432"

@@ -3,5 +3,6 @@
   "framework": "nextjs",
   "runtime": "docker",
   "port": 3000,
+  "composePath": "docker-compose.yml",
   "volumes": ["uploads:/app/public/uploads"]
 }
