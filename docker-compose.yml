@@ -1,0 +1,86 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    ports:
+      - "${APP_PORT:-3000}:3000"
+    env_file:
+      - .env
+    environment:
+      DATABASE_URL: postgresql://${POSTGRES_USER:-stallmb}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB:-stallmb}?schema=public
+      MINIO_ENDPOINT: http://minio:9000
+      MINIO_PUBLIC_URL: ${MINIO_PUBLIC_URL:-http://localhost:9000}
+    depends_on:
+      postgres:
+        condition: service_healthy
+      minio:
+        condition: service_started
+    networks:
+      - stallmb
+
+  postgres:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-stallmb}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: ${POSTGRES_DB:-stallmb}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-stallmb} -d ${POSTGRES_DB:-stallmb}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - stallmb
+
+  # S3-kompatibel storage. Ersätter Supabase Storage när admin-uppladdning kopplas om.
+  minio:
+    image: minio/minio:latest
+    restart: unless-stopped
+    command: server /data --console-address ":9001"
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+    volumes:
+      - minio_data:/data
+    ports:
+      - "${MINIO_API_PORT:-9000}:9000"
+      - "${MINIO_CONSOLE_PORT:-9001}:9001"
+    networks:
+      - stallmb
+
+  minio-init:
+    image: minio/mc:latest
+    depends_on:
+      - minio
+    restart: "no"
+    entrypoint: >
+      /bin/sh -c "
+      sleep 3;
+      mc alias set local http://minio:9000 $${MINIO_ROOT_USER} $${MINIO_ROOT_PASSWORD};
+      mc mb -p local/$${MINIO_BUCKET_HORSES:-horse-images};
+      mc mb -p local/$${MINIO_BUCKET_ASSETS:-site-assets};
+      mc anonymous set download local/$${MINIO_BUCKET_HORSES:-horse-images};
+      mc anonymous set download local/$${MINIO_BUCKET_ASSETS:-site-assets};
+      "
+    environment:
+      MINIO_ROOT_USER: ${MINIO_ROOT_USER:-minio}
+      MINIO_ROOT_PASSWORD: ${MINIO_ROOT_PASSWORD}
+      MINIO_BUCKET_HORSES: ${MINIO_BUCKET_HORSES:-horse-images}
+      MINIO_BUCKET_ASSETS: ${MINIO_BUCKET_ASSETS:-site-assets}
+    networks:
+      - stallmb
+
+volumes:
+  postgres_data:
+  minio_data:
+
+networks:
+  stallmb:
+    driver: bridge

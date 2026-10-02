@@ -1,0 +1,56 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// Hästar som visas på sajten och hanteras i admin.
+model Horse {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  createdAt     DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  name          String
+  breed         String?  @default("Connemara")
+  age           String?
+  description   String?
+  imageUrl      String?  @map("image_url")
+  category      String?
+  images        String[] @default([])
+  pedigree      Json     @default("{}")
+  blabasenLink  String?  @map("blabasen_link")
+  results       String?
+
+  @@map("horses")
+}
+
+/// Publika gästboksinlägg.
+model GuestbookEntry {
+  id        BigInt   @id @default(autoincrement())
+  name      String
+  message   String
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  @@map("guestbook")
+}
+
+/// CMS-innehåll för statiska sidor (Om oss, Connemara).
+model SiteContent {
+  id        String    @id
+  content   Json      @default("{}")
+  updatedAt DateTime? @default(now()) @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  @@map("site_content")
+}
+
+/// Enkel besöksräkning (ersätter inte Vercel Analytics / PostHog).
+model VisitorStat {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  visitedAt DateTime @default(now()) @map("visited_at") @db.Timestamptz(6)
+  path      String?
+  userAgent String?  @map("user_agent")
+
+  @@index([visitedAt], map: "idx_visitor_stats_visited_at")
+  @@map("visitor_stats")
+}
