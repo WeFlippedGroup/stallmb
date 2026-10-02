@@ -25,19 +25,19 @@ Admin loggar in med `ADMIN_EMAIL` och `ADMIN_PASSWORD`. Sessionen är en httpOnl
 cp .env.example .env
 # Sätt starka lösenord: POSTGRES_PASSWORD och ADMIN_PASSWORD
 
-docker compose up --build
+docker compose -f deploy/docker-compose.yml up --build
 ```
 
 - App: http://localhost:3000
 - Postgres: localhost:5432
 
-Stoppa med `docker compose down`. Data ligger kvar i volymerna `postgres_data` och `uploads_data`.
+Stoppa med `docker compose -f deploy/docker-compose.yml down`. Data ligger kvar i volymerna `postgres_data` och `uploads_data`.
 
 ### Utan Docker (dev mot lokal Postgres)
 
 ```bash
 # starta bara databasen
-docker compose up -d postgres
+docker compose -f deploy/docker-compose.yml up -d postgres
 
 cp .env.example .env
 # DATABASE_URL ska peka på localhost:5432
@@ -49,9 +49,11 @@ npm run dev
 
 ### På servern
 
-På [Openship](https://openship.io/docs/guides/compose-multi-service) blir ett Next.js-repo en ensam app. Tjänsterna `app` och `postgres` syns först när projektet läser `docker-compose.yml`. Det styrs av `openship.json`. Öppna projektet, fliken Services, och deploya om. Är listan fortfarande tom: sätt Compose file till `docker-compose.yml` och tryck Scan.
+I Openship är det här en vanlig Next.js-app på port 3000, samma typ av projekt som de andra. `vercel.json` och Compose-filen i rotan är borta, så Routing ska vara tom och sajten ska inte ligga som tjänsten `app`.
 
-`.env` ligger inte i repot. Sätt variablerna i Openship innan du deployar:
+Ta bort tjänsterna `app` och `postgres` om de ligger kvar, och deploya om. Lägg domänen som i de andra projekten. Databasen lägger du till med Add → Postgres och lämnar den intern. Sätt `DATABASE_URL` till `postgresql://stallmb:LÖSENORD@postgres:5432/stallmb` om tjänsten heter `postgres`.
+
+`.env` ligger inte i repot. Sätt också de här variablerna på appen:
 
 - `POSTGRES_PASSWORD` (krävs, annars startar inte databasen)
 - `POSTGRES_USER` (standard `stallmb`)
@@ -61,7 +63,7 @@ På [Openship](https://openship.io/docs/guides/compose-multi-service) blir ett N
 
 Lösenordet får inte innehålla `@`. Öppna inte Postgres-porten mot internet. Lägg en reverse proxy framför appen på port 3000.
 
-På en egen maskin utan panel: kopiera `.env.example` till `.env`, sätt samma variabler, och kör `docker compose up -d --build`.
+På en egen maskin utan panel: kopiera `.env.example` till `.env`, sätt samma variabler, och kör `docker compose -f deploy/docker-compose.yml up -d --build`.
 
 Migreringarna körs i app-containern vid start. Importera ev. data från Supabase:
 
@@ -70,7 +72,7 @@ Migreringarna körs i app-containern vid start. Importera ev. data från Supabas
 pg_dump --no-owner --no-acl "$SUPABASE_DB_URL" > stallmb.dump.sql
 
 # På servern (schema måste matcha Prisma-tabellerna)
-docker compose exec -T postgres psql -U stallmb -d stallmb < stallmb.dump.sql
+docker compose -f deploy/docker-compose.yml exec -T postgres psql -U stallmb -d stallmb < stallmb.dump.sql
 ```
 
 `site_content.updated_by` (FK mot `auth.users`) finns inte i Prisma-schemat. Ta bort den kolumnen ur dumpen om importen klagar, eller hoppa över den tabellen och låt migrationen skapa den.
@@ -109,6 +111,6 @@ Datamodellen är rekonstruerad från SQL-filerna i repo-roten. RLS och `auth.use
 | Vercel Analytics | Borttagen. `visitor_stats` räknar besök |
 | `auth.users`-kopplingen på `site_content.updated_by` | Borttagen |
 
-PostHog-rewrites i `vercel.json` används inte av appen. Ignorera dem på egen server. Resend ligger kvar i `package.json` men anropas inte.
+Resend ligger kvar i `package.json` men anropas inte.
 
 Importerade bilder som fortfarande pekar på Supabase Storage tillåts i `next.config.ts`. Nya uppladdningar sparas som `/uploads/...`.
