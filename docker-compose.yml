@@ -17,10 +17,7 @@ services:
     volumes:
       - uploads_data:/app/public/uploads
     depends_on:
-      postgres:
-        condition: service_healthy
-    networks:
-      - stallmb
+      - postgres
 
   postgres:
     image: postgres:16-alpine
@@ -38,13 +35,7 @@ services:
       interval: 5s
       timeout: 5s
       retries: 10
-    networks:
-      - stallmb
 
 volumes:
   postgres_data:
   uploads_data:
-
-networks:
-  stallmb:
-    driver: bridge

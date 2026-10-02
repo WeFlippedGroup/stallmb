@@ -49,9 +49,9 @@ npm run dev
 
 ### På servern
 
-Deploya `docker-compose.yml`, inte bara `Dockerfile`. Då ska två tjänster synas: `app` och `postgres`.
+På [Openship](https://openship.io/docs/guides/compose-multi-service) blir ett Next.js-repo en ensam app. Tjänsterna `app` och `postgres` syns först när projektet läser `docker-compose.yml`. Det styrs av `openship.json`. Öppna projektet, fliken Services, och deploya om. Är listan fortfarande tom: sätt Compose file till `docker-compose.yml` och tryck Scan.
 
-`.env` ligger inte i repot. Sätt variablerna i panelen (Coolify eller motsvarande) innan du deployar:
+`.env` ligger inte i repot. Sätt variablerna i Openship innan du deployar:
 
 - `POSTGRES_PASSWORD` (krävs, annars startar inte databasen)
 - `POSTGRES_USER` (standard `stallmb`)
